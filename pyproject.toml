@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "redpan_motion"
+version = "0.1.0"
+description = "PyTorch RED-PAN 90 s — multi-task MTAN R2U-Net for earthquake detection, P/S phase picking, and first-motion polarity on 90-second seismic windows"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "tso1257771", email = "tso1257771@gmail.com" }]
+keywords = [
+    "seismology",
+    "earthquake-detection",
+    "phase-picking",
+    "first-motion-polarity",
+    "deep-learning",
+    "pytorch",
+]
+dependencies = [
+    "torch>=2.0",
+    "numpy",
+    "scipy",
+    "pandas",
+    "obspy",
+    "h5py",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+# Only needed for the optional TensorFlow -> PyTorch weight-conversion utilities
+# in redpan_motion.utils.weight_converter. The core
+# package (build, train, infer) is pure PyTorch and never imports TensorFlow.
+tf = ["tensorflow"]
+# redpan_motion.integrations.seisbench — the three checkpoints behind the
+# SeisBench WaveformModel interface, so they are interchangeable with PhaseNet,
+# EQTransformer and the rest. Nothing in the base package imports seisbench.
+seisbench = ["seisbench>=0.5"]
+dev = ["pytest", "black", "ruff"]
+
+[tool.setuptools.packages.find]
+include = ["redpan_motion*"]
+exclude = ["tests*", "checkpoints*", "docs*", "scripts*"]
+
+[tool.ruff]
+# The house style, measured rather than chosen: across redpan_motion/, 247
+# lines exceed ruff's default 88 and 48 exceed 100. The rule set is ruff's own
+# default, so no selection is made here.
+line-length = 100
+
+[tool.ruff.lint.isort]
+# Keep `from x import (a, b as _b)` as one statement rather than splitting
+# every alias onto its own import.
+combine-as-imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

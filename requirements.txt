@@ -1,0 +1,12 @@
+# Core runtime — pure PyTorch, no TensorFlow.
+# (For editable install with extras: `pip install -e ".[dev]"`.)
+torch>=2.0
+numpy
+scipy
+pandas
+obspy
+h5py
+tqdm
+
+# Optional — only for TF->PyTorch weight conversion utilities:
+# tensorflow

@@ -1,0 +1,184 @@
+{
+  "_comment": "RP90-Motion large: the same MTAN R2U-Net widened to nb_filters [12,24,36,48,60], 1,183,404 parameters, trained from scratch with the data and sampling of train_rp90_motion_v53.json. No checkpoint from this configuration is shipped.",
+  "output_dir": "experiment/rp90_motion_large",
+  "model_type": "mtan_r2unet_rp90_motion",
+  "input_size": [
+    9000,
+    3
+  ],
+  "nb_filters": [
+    12,
+    24,
+    36,
+    48,
+    60
+  ],
+  "strides": [
+    5,
+    5,
+    3,
+    3,
+    2
+  ],
+  "kernel_size": 7,
+  "dropout_rate": 0.15,
+  "rrconv_iters": 2,
+  "pad_mode": "reflect",
+  "use_polarity": true,
+  "polarity_detached": false,
+  "polarity_arch": "deeper",
+  "polarity_head_ps_att_concat": true,
+  "polarity_head_ps_att_detach": false,
+  "polarity_loss_type": "softmax_ce",
+  "polarity_output_channels": 3,
+  "polarity_loss_weight": 0.2,
+  "polarity_ungated_epochs": 0,
+  "polarity_transition_epochs": 0,
+  "polarity_label_width": 67,
+  "polarity_mask_width": 100,
+  "polarity_mask_window": 67,
+  "polarity_oversample": 1.0,
+  "pol_stream_width_mult": 3,
+  "pol_init_rrconv_iters": 4,
+  "pol_head_ps_att_width": 16,
+  "use_impulsive_head": false,
+  "impulsive_loss_weight": 0.0,
+  "use_event_center_head": false,
+  "use_eqt_heads": false,
+  "use_eqt_picker_heads": false,
+  "use_eqt_detector_head": false,
+  "use_spectrogram": false,
+  "detector_downsample": 1,
+  "mask_window": 67,
+  "data_root": "/path/to/data/input_h5_90sec",
+  "_comment_data_root": "Overridden by the DATA_ROOT environment variable in the matching cloud_training/ launcher.",
+  "data": {
+    "TW": {
+      "file_path": "DATA_ROOT/TW"
+    },
+    "CEED_NC": {
+      "file_path": "DATA_ROOT/CEED_NC"
+    },
+    "CEED_SC": {
+      "file_path": "DATA_ROOT/CEED_SC"
+    },
+    "INSTANCE": {
+      "file_path": "DATA_ROOT/INSTANCE"
+    },
+    "GeoNet": {
+      "file_path": "DATA_ROOT/GeoNet"
+    },
+    "OBSTransformer": {
+      "file_path": "DATA_ROOT/OBSTransformer"
+    },
+    "ROMPLUS": {
+      "file_path": "DATA_ROOT/ROMPLUS"
+    },
+    "RockNet": {
+      "file_path": "DATA_ROOT/RockNet"
+    },
+    "STEAD": {
+      "file_path": "DATA_ROOT/STEAD"
+    }
+  },
+  "dataset_categories": {
+    "TW": [
+      "singleEQ",
+      "Ponly",
+      "noise",
+      "MOSAIC",
+      "EEWA",
+      "MMWA"
+    ],
+    "CEED_NC": [
+      "singleEQ",
+      "MOSAIC",
+      "EEWA",
+      "MMWA"
+    ],
+    "CEED_SC": [
+      "singleEQ",
+      "MOSAIC"
+    ],
+    "INSTANCE": [
+      "singleEQ",
+      "noise"
+    ],
+    "GeoNet": [
+      "singleEQ",
+      "noise"
+    ],
+    "OBSTransformer": [
+      "singleEQ"
+    ],
+    "ROMPLUS": [
+      "singleEQ"
+    ],
+    "RockNet": [
+      "noise"
+    ],
+    "STEAD": [
+      "singleEQ",
+      "noise",
+      "MOSAIC",
+      "EEWA",
+      "MMWA"
+    ]
+  },
+  "_comment_dataset_categories": "Nine datasets; CREW held out; CEED_SC includes its MOSAIC files.",
+  "dataset_hp_freqs": {
+    "TW": 1.0,
+    "GeoNet": 1.0
+  },
+  "exclude_categories": [
+    "singleEQ_zeropad",
+    "Sonly"
+  ],
+  "normalize_mode": "zscore",
+  "epochs": 200,
+  "batch_size": 48,
+  "lr": 0.0001,
+  "min_lr": 1e-06,
+  "weight_decay": 0.0002,
+  "optimizer": "adamw",
+  "scheduler": "cosine",
+  "warmup_epochs": 10,
+  "gradient_clip": 1.0,
+  "loss_type": "multitask",
+  "loss_reduction": "sum_over_batch",
+  "weight_mode": "soft",
+  "weight_alpha": 1.0,
+  "weight_max": 50.0,
+  "dwa": true,
+  "dwa_temperature": 2.0,
+  "category_weights": {
+    "singleEQ_00-05s": 0.1743,
+    "singleEQ_05-10s": 0.147,
+    "singleEQ_10-15s": 0.0922,
+    "singleEQ_15-20s": 0.0537,
+    "singleEQ_20s_plus": 0.0328,
+    "noise": 0.4,
+    "Ponly": 0.05,
+    "EEWA": 0.025,
+    "MMWA": 0.025
+  },
+  "_comment_category_weights": "The single-event S-P bins are sampled in proportion to the square root of each bin's pool size.",
+  "samples_per_epoch": 600000,
+  "val_samples_per_epoch": 80000,
+  "amp": true,
+  "amp_dtype": "auto",
+  "log_every": 200,
+  "save_every": 5,
+  "patience": 60,
+  "min_delta": 0.0001,
+  "best_metric": "pick_det",
+  "_comment_best_metric": "pick_det selects best.pt on the picker and detector validation losses; best_total.pt is also written, under the total loss.",
+  "seed": 54,
+  "resume": null,
+  "resume_optimizer": false,
+  "resume_scheduler": false,
+  "_comment_resume_state": "Trained from scratch. To resume an interrupted run, set 'resume' to the newest epoch checkpoint and set resume_optimizer and resume_scheduler to true.",
+  "pretrained_weights": null,
+  "reset_polarity_head": false,
+  "reset_polarity_stream": false
+}

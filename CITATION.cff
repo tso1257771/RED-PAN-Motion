@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "RED-PAN-Motion: multi-task earthquake detection, phase picking and first-motion polarity for 90-second seismic windows"
+abstract: >-
+  A pure-PyTorch multi-task MTAN R2U-Net that jointly performs earthquake
+  detection, P and S phase picking, and first-motion polarity on 90-second
+  three-component seismic windows at 100 Hz. Ships three pretrained
+  checkpoints: the original RED-PAN 60 s model ported to PyTorch, the 90 s
+  RP90-Motion model, and EdgeRP90 for edge deployment.
+type: software
+license: MIT
+version: 0.1.0
+repository-code: "https://github.com/tso1257771/RED-PAN-Motion"
+keywords:
+  - seismology
+  - earthquake detection
+  - phase picking
+  - first-motion polarity
+  - deep learning
+  - pytorch
+authors:
+  - given-names: Wu-Yu
+    family-names: Liao
+    alias: tso1257771
+    email: tso1257771@gmail.com
+
+references:
+  - type: article
+    title: "RED-PAN: Real-Time Earthquake Detection and Phase-Picking With Multitask Attention Network"
+    authors:
+      - family-names: Liao
+        given-names: Wu-Yu
+      - family-names: Lee
+        given-names: En-Jui
+      - family-names: Chen
+        given-names: Da-Yi
+      - family-names: Chen
+        given-names: Po
+      - family-names: Mu
+        given-names: Dawei
+      - family-names: Wu
+        given-names: Yih-Min
+    journal: "IEEE Transactions on Geoscience and Remote Sensing"
+    volume: 60
+    year: 2022
+    doi: "10.1109/TGRS.2022.3205558"
+    notes: "The original RED-PAN model and architecture this project builds on."
+  - type: software
+    title: SeisBench
+    authors:
+      - name: "The SeisBench developers"
+    repository-code: "https://github.com/seisbench/seisbench"
+    license: GPL-3.0-only
+    notes: "Used by the optional SeisBench integration."
