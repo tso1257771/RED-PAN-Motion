@@ -33,7 +33,8 @@ def main():
     ap.add_argument("--year", type=int, required=True)
     ap.add_argument("--jday", type=int, required=True)
     ap.add_argument("--out", default=f"{ROOT}/outputs/redpan_picks")
-    ap.add_argument("--ckpt", default=f"{ROOT}/checkpoints/redpan_motion/best.pt")
+    ap.add_argument("--ckpt", default="redpan_motion",
+                    help="a .pt path, or a shipped checkpoint: redpan_60s, redpan_motion, edge_rp90")
     ap.add_argument("--mode", default="single", help="single (default) or sliding")
     ap.add_argument("--xml-dir", default=None,
                     help="dir of <NET>.<STA>.xml for amplitudes (omit = no-amplitude fast path)")

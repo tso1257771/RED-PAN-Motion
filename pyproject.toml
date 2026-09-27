@@ -43,6 +43,11 @@ dev = ["pytest", "black", "ruff"]
 include = ["redpan_motion*"]
 exclude = ["tests*", "checkpoints*", "docs*", "scripts*"]
 
+# The released weights ship inside the package (about 5.4 MB); edge_rp90/final.pt
+# stays in the repository only.
+[tool.setuptools.package-data]
+"redpan_motion.checkpoints" = ["*/best.pt", "*/config.json"]
+
 [tool.ruff]
 # The house style, measured rather than chosen: across redpan_motion/, 247
 # lines exceed ruff's default 88 and 48 exceed 100. The rule set is ruff's own

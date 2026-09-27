@@ -16,7 +16,7 @@ faults found in earlier versions of it, neither of which needs a real earthquake
 Agreement against the native path on real records needs waveforms, which this
 repository does not ship, so it is not tested here.
 
-Run:  REDPAN_CKPTS=./checkpoints python -m pytest tests/test_seisbench_integration.py
+Run:  python -m pytest tests/test_seisbench_integration.py   (REDPAN_CKPTS overrides the shipped checkpoints)
 """
 import os
 
@@ -26,6 +26,7 @@ import pytest
 torch = pytest.importorskip("torch")
 pytest.importorskip("seisbench", reason='needs the [seisbench] extra')
 
+from redpan_motion.checkpoints import CHECKPOINT_DIR
 from redpan_motion.integrations.seisbench import (
     RedpanSB60s,
     RedpanSB90s,
@@ -33,7 +34,7 @@ from redpan_motion.integrations.seisbench import (
     _state_dict_from,
 )
 
-CKPTS = os.environ.get("REDPAN_CKPTS", "checkpoints")
+CKPTS = os.environ.get("REDPAN_CKPTS", str(CHECKPOINT_DIR))
 DEV = "cpu"
 RNG = np.random.default_rng(0)
 

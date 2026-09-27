@@ -9,12 +9,10 @@ Run from the project root:
 import inspect
 import json
 import sys
-from pathlib import Path
 
 import torch
 
-ROOT = Path(__file__).resolve().parent.parent
-CKPT = ROOT / "checkpoints"
+from redpan_motion.checkpoints import CHECKPOINT_DIR as CKPT
 
 
 def fail(msg):

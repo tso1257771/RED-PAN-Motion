@@ -65,8 +65,9 @@ except ImportError as exc:  # pragma: no cover
     ) from exc
 
 _CITATION = (
-    "Liao, W.-Y., et al. RED-PAN: A Real-Time Earthquake Detection and "
-    "Phase-Picking Approach with Multitask Attention Network. "
+    "Liao, W.-Y., et al. (2022). RED-PAN: Real-Time Earthquake Detection and "
+    "Phase-Picking With Multitask Attention Network. IEEE Transactions on "
+    "Geoscience and Remote Sensing, 60. doi:10.1109/TGRS.2022.3205558. "
     "PyTorch port: https://github.com/tso1257771/RED-PAN-Motion"
 )
 
@@ -445,7 +446,9 @@ class _RedpanSBBase(sbm.WaveformModel):
         device: str | None = None,
         variant: str | None = None,
     ) -> _RedpanSBBase:
-        """Build from a RED-PAN-Motion ``checkpoints/<variant>/`` directory.
+        """Build from a checkpoint directory (``best.pt`` and ``config.json``),
+        or from the name of a shipped checkpoint: ``redpan_60s``,
+        ``redpan_motion`` or ``edge_rp90``.
 
         The architecture is rebuilt from the sibling ``config.json``,
         forwarding only the keys the builder accepts, the same rule
@@ -457,8 +460,9 @@ class _RedpanSBBase(sbm.WaveformModel):
         always has; one that wraps several needs the name, or ``variant=``.
         """
         from .. import models as rpm
+        from ..checkpoints import resolve
 
-        d = Path(checkpoint_dir)
+        d = resolve(checkpoint_dir, file=False)
         if variant is None:
             if d.name in cls.VARIANTS:
                 variant = d.name

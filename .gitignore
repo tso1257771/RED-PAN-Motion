@@ -47,14 +47,15 @@ plots/
 # Anchored to the repo root, so only the top-level metadata/ is ignored.
 /metadata/
 
-# checkpoints/ is tracked for the three released models only: each
-# checkpoints/<model>/ holds best.pt and config.json (edge_rp90 also final.pt).
-# Everything else under checkpoints/ stays local.
-checkpoints/*
-!checkpoints/redpan_60s/
-!checkpoints/redpan_motion/
-!checkpoints/edge_rp90/
-checkpoints/**/*.log
-checkpoints/*/epoch_*/
-checkpoints/**/epoch_*.pt
-checkpoints/**/best_total.pt
+# redpan_motion/checkpoints/ is tracked for the three released models only:
+# each <model>/ holds best.pt and config.json (edge_rp90 also final.pt).
+# Everything else there stays local.
+redpan_motion/checkpoints/*
+!redpan_motion/checkpoints/__init__.py
+!redpan_motion/checkpoints/redpan_60s/
+!redpan_motion/checkpoints/redpan_motion/
+!redpan_motion/checkpoints/edge_rp90/
+redpan_motion/checkpoints/**/*.log
+redpan_motion/checkpoints/*/epoch_*/
+redpan_motion/checkpoints/**/epoch_*.pt
+redpan_motion/checkpoints/**/best_total.pt

@@ -22,6 +22,15 @@ first motion.
 
 ## Install
 
+The package includes the three pretrained checkpoints, so one line installs
+everything needed to run them:
+
+```bash
+pip install "redpan_motion[seisbench] @ git+https://github.com/tso1257771/RED-PAN-Motion@v0.1.0"
+```
+
+For development, from a clone:
+
 ```bash
 git clone https://github.com/tso1257771/RED-PAN-Motion
 cd RED-PAN-Motion
@@ -37,16 +46,16 @@ lazy and live only inside the optional helpers that convert weights.
 
 ## Quick start
 
-`REDPANPredictor.from_checkpoint` reads the sibling `config.json` and rebuilds
-the architecture the checkpoint was trained with. It is the simplest correct
-way to load any of the shipped checkpoints.
+`REDPANPredictor.from_checkpoint` takes the name of a shipped checkpoint
+(`redpan_60s`, `redpan_motion` or `edge_rp90`) or a path to a `.pt` file. It
+reads the `config.json` beside the weights and rebuilds the architecture the
+checkpoint was trained with.
 
 ```python
 import numpy as np
 from redpan_motion.inference import REDPANPredictor
 
-predictor = REDPANPredictor.from_checkpoint(
-    "checkpoints/redpan_motion/best.pt", device="cuda")
+predictor = REDPANPredictor.from_checkpoint("redpan_motion", device="cuda")
 
 # Sliding-window inference over a long 3-component trace (C, T) at 100 Hz.
 waveform = np.random.randn(3, 60000).astype("float32")
@@ -77,8 +86,8 @@ for PhaseNet or EQTransformer:
 ```python
 from redpan_motion.integrations.seisbench import RedpanSB60s, RedpanSB90s
 
-model = RedpanSB90s.from_redpan_checkpoint("checkpoints/redpan_motion")  # or edge_rp90
-# model = RedpanSB60s.from_redpan_checkpoint("checkpoints/redpan_60s")
+model = RedpanSB90s.from_redpan_checkpoint("redpan_motion")  # or "edge_rp90"
+# model = RedpanSB60s.from_redpan_checkpoint("redpan_60s")
 picks = model.classify(stream).picks      # stream: an obspy.Stream at any sampling rate
 ```
 
@@ -91,9 +100,12 @@ times.
 
 ## Pretrained checkpoints
 
-Three checkpoints ship in `checkpoints/`. Each directory holds the best epoch
+Three checkpoints ship inside the package, in `redpan_motion/checkpoints/`,
+so an install from GitHub includes them. Each directory holds the best epoch
 as `best.pt` together with the `config.json` needed to rebuild its
-architecture, which `from_checkpoint` reads automatically.
+architecture. The loaders take the directory name; a bare name always means
+the shipped checkpoint, and `redpan_motion.checkpoints.checkpoint_dir(name)`
+gives its path.
 
 | checkpoint | window | heads | params | notes |
 |---|---|---|---:|---|
@@ -105,9 +117,10 @@ Parameter counts are printed by `scripts/verify_install.py`. The tests check
 the exact count of `redpan_60s` and the parameter and MAC budgets of
 `edge_rp90`.
 
-`checkpoints/edge_rp90/final.pt` holds the weights of the last training epoch
-as a bare state dict. The released model is `best.pt` (epoch 189), and nothing
-in the package loads `final.pt`.
+`redpan_motion/checkpoints/edge_rp90/final.pt` holds the weights of the last
+training epoch as a bare state dict. The released model is `best.pt`
+(epoch 189). `final.pt` is in the repository only, not in the installed
+package, and nothing loads it.
 
 ## Architecture
 
@@ -139,6 +152,7 @@ RED-PAN-Motion/
 │   ├── sp_thresholds.py    # detection thresholds that vary with S-P time
 │   ├── signal.py           # the model-input filters: highpass, bandpass
 │   ├── waveform_io.py      # SAC and StationXML reading, grouping of a day archive by instrument
+│   ├── checkpoints/        # the released weights: redpan_60s, redpan_motion, edge_rp90
 │   ├── integrations/       # seisbench.py: the three checkpoints as SeisBench models
 │   ├── amplitudes.py       # from RED-PAN: amplitudes, Wood-Anderson, SNR
 │   ├── response.py         # from RED-PAN: sensor and response constants
@@ -151,7 +165,6 @@ RED-PAN-Motion/
 │                           #   benchmark_polarity_filt, benchmark_p_pick_timing
 ├── notebooks/              # fdsn_inference.ipynb (FDSN download and picking),
 │                           #   daily_inference.py (a day archive, as Jupyter cells)
-├── checkpoints/            # pinned weights: redpan_60s, redpan_motion, edge_rp90
 ├── edge_model_design/deploy/    # edge_rp90 exported to ONNX, fp32 and INT8
 ├── configs/                # training configs
 ├── tests/                  # pytest suite
@@ -181,7 +194,8 @@ DATA_ROOT=/path/to/input_h5_90sec \
 - `configs/train_rp90_motion.json` is the earlier **v45** config, with
   `nb_filters` `[6,12,18,24,32]`, a deeper polarity head, `softmax_ce`, and
   `pol_stream_width_mult=3` (331,336 parameters). The shipped `redpan_motion`
-  (v49) records its own configuration in `checkpoints/redpan_motion/config.json`,
+  (v49) records its own configuration in
+  `redpan_motion/checkpoints/redpan_motion/config.json`,
   which the driver also accepts through `--config`. Set `data_root` or
   `DATA_ROOT` and the per-dataset `data` block.
 - `configs/train_edge_rp90.json` trains EdgeRP90. The other files in

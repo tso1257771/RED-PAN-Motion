@@ -179,7 +179,7 @@
   "resume": null,
   "resume_optimizer": false,
   "resume_scheduler": false,
-  "_comment_resume_state": "Trained from scratch. Setting pretrained_weights to checkpoints/edge_rp90/best.pt fine-tunes from the shipped model instead.",
+  "_comment_resume_state": "Trained from scratch. Setting pretrained_weights to redpan_motion/checkpoints/edge_rp90/best.pt fine-tunes from the shipped model instead.",
   "pretrained_weights": null,
   "reset_polarity_head": false,
   "reset_polarity_stream": false

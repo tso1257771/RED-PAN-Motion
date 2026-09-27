@@ -12,12 +12,13 @@ import torch
 import torch.nn as nn
 
 from redpan_motion.inference import REDPANPredictor
+from redpan_motion.checkpoints import checkpoint_path
 from redpan_motion.models import build_redpan_60s, Redpan60s
 
 TRAINABLE_PARAMS = 349_685
 TOTAL_PARAMS = 352_817          # incl. BN running_mean/var (== TF count_params)
 MAC_BUDGET = 0.09e9             # measured ~0.0823 GMAC per 6000-sample window
-CKPT = "checkpoints/redpan_60s/best.pt"
+CKPT = str(checkpoint_path("redpan_60s"))
 
 
 def test_param_count():

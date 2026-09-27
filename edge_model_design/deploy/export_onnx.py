@@ -8,7 +8,7 @@ import torch
 from pathlib import Path
 from redpan_motion.inference.predictor import REDPANPredictor
 
-CKPT = "checkpoints/edge_rp90/best.pt"   # epoch 189
+CKPT = "edge_rp90"   # the shipped checkpoint, epoch 189
 OUT = Path("edge_model_design/deploy/edge_rp90_e189.onnx")
 OUT.parent.mkdir(parents=True, exist_ok=True)
 

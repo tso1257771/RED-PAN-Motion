@@ -8,7 +8,7 @@ Quick Start:
     from redpan_motion import REDPANPredictor, load, highpass, picks_to_dataframe
 
     raw, wf_so, inv, (net, sta, loc, chn), t0, st = load("STA.NET.LOC.HH?.YYYY.JJJ", xml=None)
-    pred = REDPANPredictor.from_checkpoint("checkpoints/redpan_motion/best.pt", device="cuda")
+    pred = REDPANPredictor.from_checkpoint("redpan_motion", device="cuda")
     picker, detector, polarity = pred.predict_arrays(highpass(raw, 1.0))
     df = picks_to_dataframe(picker, detector, polarity, t0, f"{net}.{sta}.{loc}.{chn}",
                             amplitude=False)            # -> redpan_picks DataFrame

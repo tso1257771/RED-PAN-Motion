@@ -25,7 +25,7 @@ ROOTS = {
     "ceed_nc": f"{DATA_ROOT}/CEED_NC/CEED_NC_dataset_90s_singleEQ",
     "instance": f"{DATA_ROOT}/INSTANCE/INSTANCE_dataset_90s_singleEQ",
 }
-CKPT = str(Path(__file__).resolve().parents[2] / "checkpoints/redpan_motion/best.pt")
+CKPT = "redpan_motion"   # the shipped checkpoint; or a path to a .pt
 DT = 0.01
 POL = {0: "N", 1: "U", 2: "D"}
 

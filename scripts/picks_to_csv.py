@@ -25,7 +25,8 @@ def main():
                     help="glob matching one instrument's three components, e.g. 'day/*.sac'")
     ap.add_argument("--xml", default=None,
                     help="StationXML for the station; needed for amplitude columns")
-    ap.add_argument("--ckpt", default=f"{ROOT}/checkpoints/redpan_motion/best.pt")
+    ap.add_argument("--ckpt", default="redpan_motion",
+                    help="a .pt path, or a shipped checkpoint: redpan_60s, redpan_motion, edge_rp90")
     ap.add_argument("--out", default=f"{ROOT}/outputs/redpan_picks")
     ap.add_argument("--mode", default="single", help="single (default) or sliding")
     ap.add_argument("--no-amplitude", action="store_true",

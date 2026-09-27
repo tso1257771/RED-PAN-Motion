@@ -30,7 +30,7 @@ try:
 except NameError:  # running as Jupyter cells (no __file__); assume cwd is notebooks/
     _default_root = str(Path.cwd().parent)
 ROOT = os.environ.get("REDPAN_MOTION_ROOT", _default_root)
-CKPT = f"{ROOT}/checkpoints/redpan_motion/best.pt"
+CKPT = "redpan_motion"   # the shipped checkpoint; or a path to a .pt
 # Root of your day archive: <DATADIR>/<NETDIR>/A/<YYYY>/<JJJ>/<STA>/<files>
 DATADIR = os.environ.get("REDPAN_DATADIR", "/path/to/day_archive")
 

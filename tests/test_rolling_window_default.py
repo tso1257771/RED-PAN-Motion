@@ -13,10 +13,11 @@ import os
 import numpy as np
 import pytest
 
+from redpan_motion.checkpoints import CHECKPOINT_DIR
 from redpan_motion.inference import REDPANPredictor
 from redpan_motion.inference.predictor import _ROLLING_WINDOW_BY_MODEL
 
-CKPTS = os.environ.get("REDPAN_CKPTS", "checkpoints")
+CKPTS = os.environ.get("REDPAN_CKPTS", str(CHECKPOINT_DIR))
 
 
 def _have(variant):

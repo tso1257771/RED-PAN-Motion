@@ -40,7 +40,7 @@ STEAD_DIR = Path(os.environ.get("STEAD_DIR", "/path/to/data/STEAD"))
 STEAD_CSV = STEAD_DIR / "merge.csv"
 STEAD_HDF5 = STEAD_DIR / "merge.hdf5"
 STEAD_TEST_IDS = STEAD_DIR / "test.npy"
-CKPT = str(Path(__file__).resolve().parents[2] / "checkpoints/redpan_motion/best.pt")
+CKPT = "redpan_motion"   # the shipped checkpoint; or a path to a .pt
 
 
 def preprocess(wf, taper_ratio=0.05, bandpass=(1.0, 45.0)):

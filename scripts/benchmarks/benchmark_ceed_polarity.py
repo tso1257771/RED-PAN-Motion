@@ -26,7 +26,7 @@ from redpan_motion import REDPANPredictor, bandpass_for_model, CH_Z
 CACHE = os.environ.get("CEED_CACHE", "/path/to/data/seisbench_cache/datasets/ceed")
 # CEED_TEST_IDS: a .npy of the CEED test-split trace ids to evaluate on.
 IDS = os.environ.get("CEED_TEST_IDS", "/path/to/ceed_test_ids.npy")
-CKPT = str(Path(__file__).resolve().parents[2] / "checkpoints/redpan_motion/best.pt")
+CKPT = "redpan_motion"   # the shipped checkpoint; or a path to a .pt
 IN_SAMPLES = 9000
 DT = 0.01
 POL = {0: "N", 1: "U", 2: "D"}   # polarity head channel order [N, U, D]

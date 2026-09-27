@@ -1,5 +1,5 @@
 {
-  "_comment": "RP90-Motion v45: nb_filters [6,12,18,24,32] with a deeper polarity head, trained from scratch, about 331 k parameters. An earlier configuration: the shipped redpan_motion checkpoint (v49) records its own in checkpoints/redpan_motion/config.json.",
+  "_comment": "RP90-Motion v45: nb_filters [6,12,18,24,32] with a deeper polarity head, trained from scratch, about 331 k parameters. An earlier configuration: the shipped redpan_motion checkpoint (v49) records its own in redpan_motion/checkpoints/redpan_motion/config.json.",
   "_inference_note": "Output is (picker, polarity with 3 channels, detector); pass the raw vertical as z_raw.",
   "output_dir": "experiment/rp90_motion_xl_polv45",
   "model_type": "mtan_r2unet_rp90_motion_xl",

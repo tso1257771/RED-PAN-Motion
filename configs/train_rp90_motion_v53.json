@@ -178,7 +178,7 @@
   "resume_optimizer": false,
   "resume_scheduler": false,
   "_comment_resume_state": "A warm start, not a resume: a fresh optimizer and schedule initialised from the shipped weights. To resume an interrupted run, set 'resume' (not 'pretrained_weights') to the newest epoch checkpoint and set resume_optimizer and resume_scheduler to true.",
-  "pretrained_weights": "checkpoints/redpan_motion/best.pt",
+  "pretrained_weights": "redpan_motion/checkpoints/redpan_motion/best.pt",
   "reset_polarity_head": false,
   "reset_polarity_stream": false
 }

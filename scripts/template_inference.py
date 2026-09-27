@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 from redpan_motion import REDPANPredictor   # the model class is the only thing the package must supply
 
-CKPT = str(Path(__file__).resolve().parents[1] / "checkpoints/redpan_motion/best.pt")
+CKPT = "redpan_motion"   # the shipped checkpoint; or a path to a .pt
 
 
 # def main():

@@ -1,7 +1,7 @@
 """Convert the original RED-PAN 60 s TensorFlow model (``TF60``) to a pure-torch
 ``Redpan60s`` checkpoint, with outputs verified to match.
 
-A maintainer tool: ``checkpoints/redpan_60s/`` already holds its output, so users
+A maintainer tool: ``redpan_motion/checkpoints/redpan_60s/`` already holds its output, so users
 do not need to run it. It needs the TensorFlow model code and trained weights of
 the original RED-PAN, https://github.com/tso1257771/RED-PAN (``redpan/legacy/
 mtan_ARRU.py`` and ``pretrained_model/``); point ``REDPAN_TF_TOOLS`` and
@@ -15,7 +15,7 @@ with ``input_size=(6000, 3)``, ``nb_filters=[6,12,18,24,30,36]`` — a 2-head
 This reads the trained TF checkpoint (``train.hdf5`` / ``train.weights``), ports
 every Conv1D / BatchNormalization into ``Redpan60s`` using the deterministic
 Keras auto-name map (``Redpan60s.tf_layer_names``), and writes
-``checkpoints/redpan_60s/{best.pt, config.json}``. With ``--verify`` it runs both
+``redpan_motion/checkpoints/redpan_60s/{best.pt, config.json}``. With ``--verify`` it runs both
 models on CPU and reports the picker/detector max-abs difference (target < 1e-3;
 observed ~2e-7).
 
@@ -41,7 +41,7 @@ from redpan_motion.models.redpan_60s import Redpan60s
 DEFAULT_TF_TOOLS = os.environ.get("REDPAN_TF_TOOLS", "/path/to/RED-PAN")
 DEFAULT_TF_DIR = os.environ.get(
     "REDPAN_TF_DIR", f"{DEFAULT_TF_TOOLS}/pretrained_model/<60 s model>")
-DEFAULT_OUT = "checkpoints/redpan_60s"
+DEFAULT_OUT = "redpan_motion/checkpoints/redpan_60s"
 
 
 def load_tf_named_weights(tf_dir: str, tf_tools: str) -> dict:

@@ -22,6 +22,7 @@ from redpan_motion.utils.waveform import (
     create_triangular_weights,
     create_cosine_weights,
 )
+from redpan_motion.checkpoints import resolve as _resolve_checkpoint
 from redpan_motion.sp_thresholds import (
     resolve_table as _sp_resolve_table,
     params_for_duration as _sp_params_for_duration,
@@ -53,7 +54,7 @@ class REDPANPredictor:
     Provides the same interface as the REDPAN class of the original TensorFlow RED-PAN.
     
     Example:
-        predictor = REDPANPredictor.from_checkpoint('checkpoints/redpan_motion/best.pt')
+        predictor = REDPANPredictor.from_checkpoint('redpan_motion')   # or a path to a .pt
         picker, detector = predictor.predict(stream)
     """
     
@@ -307,7 +308,8 @@ class REDPANPredictor:
         with the polarity stream), and the base ``mtan_r2unet``.
 
         Args:
-            checkpoint_path: Path to .pt checkpoint
+            checkpoint_path: Path to a .pt checkpoint, or the name of a shipped
+                one: 'redpan_60s', 'redpan_motion' or 'edge_rp90'.
             model_kwargs: Optional model init arguments (override config values).
             model_type: Explicit model type override ('edge_rp90_v1',
                 'redpan_60s', 'mtan_r2unet_rp90_motion' or 'mtan_r2unet').
@@ -318,6 +320,8 @@ class REDPANPredictor:
             Initialized predictor
         """
         model_kwargs = model_kwargs or {}
+        # A shipped checkpoint may be named rather than located.
+        checkpoint_path = str(_resolve_checkpoint(checkpoint_path, file=True))
 
         checkpoint = cls._load_checkpoint_compat(checkpoint_path, map_location='cpu')
 
