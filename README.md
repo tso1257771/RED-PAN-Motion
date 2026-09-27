@@ -82,6 +82,13 @@ model = RedpanSB90s.from_redpan_checkpoint("checkpoints/redpan_motion")  # or ed
 picks = model.classify(stream).picks      # stream: an obspy.Stream at any sampling rate
 ```
 
+### Worked example
+
+[`notebooks/fdsn_inference.ipynb`](notebooks/fdsn_inference.ipynb) downloads the
+waveforms of one earthquake from FDSN services with ObsPy, runs the three
+checkpoints through both interfaces, and compares the picks with iasp91 arrival
+times.
+
 ## Pretrained checkpoints
 
 Three checkpoints ship in `checkpoints/`. Each directory holds the best epoch
@@ -142,10 +149,11 @@ RED-PAN-Motion/
 │   │                       #   train_rp90_motion, verify_install, convert_redpan_60s
 │   └── benchmarks/         #   benchmark_stead, benchmark_ceed_polarity,
 │                           #   benchmark_polarity_filt, benchmark_p_pick_timing
-├── notebooks/              # daily_inference.py, written as Jupyter cells
+├── notebooks/              # fdsn_inference.ipynb (FDSN download and picking),
+│                           #   daily_inference.py (a day archive, as Jupyter cells)
 ├── checkpoints/            # pinned weights: redpan_60s, redpan_motion, edge_rp90
 ├── edge_model_design/deploy/    # edge_rp90 exported to ONNX, fp32 and INT8
-├── configs/, cloud_training/    # training configs and their torchrun/DDP launchers
+├── configs/                # training configs
 ├── tests/                  # pytest suite
 ├── pyproject.toml
 └── README.md
@@ -157,7 +165,8 @@ The training code for the two 90 s checkpoints is in this project.
 
 ```bash
 # Multi-GPU (DDP via torchrun). Point DATA_ROOT at the *_dataset_90s*.h5 directory.
-DATA_ROOT=/path/to/input_h5_90sec NPROC=4 bash cloud_training/run_rp90_motion.sh
+DATA_ROOT=/path/to/input_h5_90sec torchrun --standalone --nproc_per_node=4 \
+  scripts/train_rp90_motion.py --config configs/train_rp90_motion.json --num-workers 4
 # Single-GPU:
 DATA_ROOT=/path/to/input_h5_90sec \
   python scripts/train_rp90_motion.py --config configs/train_rp90_motion.json
@@ -166,7 +175,9 @@ DATA_ROOT=/path/to/input_h5_90sec \
 - `scripts/train_rp90_motion.py` is the driver. It applies the DWA multi-task
   loss with AMP, DDP and DistributedSampler, and passes raw Z to the polarity
   head through `z_raw`. It builds `MTAN_R2UNet_RP90_Motion` from the config.
-  Older `_xl` and architecture flags are accepted and ignored.
+  Older `_xl` and architecture flags are accepted and ignored. `batch_size` in
+  a config is per GPU, so the global batch is `batch_size` times the number of
+  GPUs.
 - `configs/train_rp90_motion.json` is the earlier **v45** config, with
   `nb_filters` `[6,12,18,24,32]`, a deeper polarity head, `softmax_ce`, and
   `pol_stream_width_mult=3` (331,336 parameters). The shipped `redpan_motion`
@@ -174,8 +185,8 @@ DATA_ROOT=/path/to/input_h5_90sec \
   which the driver also accepts through `--config`. Set `data_root` or
   `DATA_ROOT` and the per-dataset `data` block.
 - `configs/train_edge_rp90.json` trains EdgeRP90. The other files in
-  `configs/` train larger or retuned variants, each with a launcher in
-  `cloud_training/`. No checkpoint from those variants is shipped.
+  `configs/` train larger or retuned variants. No checkpoint from those
+  variants is shipped.
 - `redpan_motion/data/dataset_v2.py` holds `MultiDatasetH5`, the loader for
   several datasets at once, with mosaic augmentation, a category whitelist and
   highpass per dataset, and category weights.
@@ -191,11 +202,40 @@ documents the full schema for each dataset.
 pytest tests/ -v
 ```
 
+## Citation
+
+If you use RED-PAN-Motion, please cite the RED-PAN paper:
+
+```bibtex
+@article{Liao2022,
+  title = {RED-PAN: Real-Time Earthquake Detection and Phase-Picking With Multitask Attention Network},
+  volume = {60},
+  ISSN = {1558-0644},
+  url = {http://dx.doi.org/10.1109/TGRS.2022.3205558},
+  DOI = {10.1109/tgrs.2022.3205558},
+  journal = {IEEE Transactions on Geoscience and Remote Sensing},
+  publisher = {Institute of Electrical and Electronics Engineers (IEEE)},
+  author = {Liao,  Wu-Yu and Lee,  En-Jui and Chen,  Da-Yi and Chen,  Po and Mu,  Dawei and Wu,  Yih-Min},
+  year = {2022},
+  pages = {1–11}
+}
+```
+
+If you use the SeisBench integration, please also cite SeisBench.
+`CITATION.cff` has the software citation.
+
 ## License
 
 MIT © 2025 tso1257771. See [LICENSE](LICENSE). Built on the original
-[RED-PAN](https://github.com/tso1257771/RED-PAN) architecture (Liao et al.,
-2022, IEEE Transactions on Geoscience and Remote Sensing,
-[doi:10.1109/TGRS.2022.3205558](https://doi.org/10.1109/TGRS.2022.3205558)).
-The optional SeisBench integration uses
-[SeisBench](https://github.com/seisbench/seisbench) (GPL-3.0).
+[RED-PAN](https://github.com/tso1257771/RED-PAN) architecture.
+
+RED-PAN-Motion uses these open-source projects. None of their code is copied
+into this repository.
+
+| project | license | used for |
+|---|---|---|
+| [PyTorch](https://pytorch.org) | BSD 3-Clause | the models, training and inference |
+| [NumPy](https://numpy.org) | BSD 3-Clause | arrays |
+| [ObsPy](https://www.obspy.org) | LGPL-3.0 | waveform and station metadata I/O |
+| [SeisBench](https://github.com/seisbench/seisbench) | GPL-3.0 | the optional `seisbench` extra, `redpan_motion.integrations.seisbench` |
+| [TensorFlow](https://www.tensorflow.org) | Apache 2.0 | the optional `tf` extra, weight conversion only |

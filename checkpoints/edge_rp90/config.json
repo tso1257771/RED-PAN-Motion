@@ -52,8 +52,8 @@
   "use_spectrogram": false,
   "detector_downsample": 1,
   "mask_window": 67,
-  "data_root": "/path/to/data/input_h5_90sec",
-  "_comment_data_root": "Overridden by the DATA_ROOT environment variable in the matching cloud_training/ launcher.",
+  "data_root": "/path/to/input_h5_90sec",
+  "_comment_data_root": "Overridden by the DATA_ROOT environment variable.",
   "data": {
     "TW": {
       "file_path": "DATA_ROOT/TW"

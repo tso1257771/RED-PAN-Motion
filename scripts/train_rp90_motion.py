@@ -56,7 +56,7 @@ def parse_args():
 
 
 def resolve_data_dirs(cfg) -> list:
-    # DATA_ROOT env overrides the config's data_root (set by cloud_training/run_*.sh).
+    # The DATA_ROOT environment variable overrides the config's data_root.
     data_root = os.environ.get("DATA_ROOT") or cfg.get("data_root", "")
     if "data" in cfg and isinstance(cfg["data"], dict):
         dirs = []

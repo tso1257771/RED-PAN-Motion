@@ -108,7 +108,7 @@ def group_instruments(datadir, year, jday, min_comps=3):
     ``min_comps=1`` also takes 1- and 2-component instruments, for a caller that
     fills the missing components itself.
 
-    Filenames follow the GDMSData_Read convention ``STA.NET.LOC.CHN.YYYY.JJJ``;
+    Filenames follow the day-archive convention ``STA.NET.LOC.CHN.YYYY.JJJ``;
     the returned glob_index uses a ``?`` wildcard on the component letter so
     ``obspy.read`` picks up the 3 traces in one call."""
     year_s, jday_s = f"{int(year):04d}", f"{int(jday):03d}"

@@ -19,7 +19,7 @@ from scipy.signal import butter, sosfiltfilt
 
 from redpan_motion import REDPANPredictor, bandpass_for_model, CH_Z
 
-DATA_ROOT = os.environ.get("DATA_ROOT", "/path/to/data/input_h5_90sec_v3")
+DATA_ROOT = os.environ.get("DATA_ROOT", "/path/to/input_h5_90sec")
 ROOTS = {
     "tw": f"{DATA_ROOT}/TW/TW_dataset_90s_singleEQ",
     "ceed_nc": f"{DATA_ROOT}/CEED_NC/CEED_NC_dataset_90s_singleEQ",

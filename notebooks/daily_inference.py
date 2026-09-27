@@ -31,6 +31,8 @@ except NameError:  # running as Jupyter cells (no __file__); assume cwd is noteb
     _default_root = str(Path.cwd().parent)
 ROOT = os.environ.get("REDPAN_MOTION_ROOT", _default_root)
 CKPT = f"{ROOT}/checkpoints/redpan_motion/best.pt"
+# Root of your day archive: <DATADIR>/<NETDIR>/A/<YYYY>/<JJJ>/<STA>/<files>
+DATADIR = os.environ.get("REDPAN_DATADIR", "/path/to/day_archive")
 
 # %% [markdown]
 # ## Load the model once
@@ -47,7 +49,7 @@ print("loaded", CKPT, "on", device)
 # them at your own three-component files.
 
 # %%
-gidx = f"{ROOT}/data/GDMSData_Read/TSMIP/A/2019/001/D111/D111.TW.10.HL?.2019.001"
+gidx = f"{DATADIR}/NETDIR/A/2019/001/STA/STA.NET.LOC.HH?.2019.001"   # one instrument, ? = component
 raw, wf_so, inv, (net, sta, loc, chn2), t0, st = load(gidx, xml=None)   # xml=None -> no-amplitude
 dt = 1.0 / st[0].stats.sampling_rate
 station_id = f"{net}.{sta}.{loc}.{chn2}"
@@ -64,7 +66,7 @@ df.head(10)
 # ## A whole day: iterate every instrument in the archive
 
 # %%
-groups = group_instruments(f"{ROOT}/data/GDMSData_Read", year=2019, jday=1)
+groups = group_instruments(DATADIR, year=2019, jday=1)
 print(len(groups), "3-component instruments")
 
 all_picks = []

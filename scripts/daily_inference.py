@@ -7,11 +7,11 @@ per instrument. Thin wrapper over the redpan_motion package (no sys.path hacks);
 for cell-by-cell interactive use see ``notebooks/daily_inference.py``.
 
 Input layout (a CWA-style day archive; the archive itself is not public):
-    <datadir>/{CWASN,TSMIP}/A/<YYYY>/<JJJ>/<STA>/<STA>.<NET>.<LOC>.<CHN>.<YYYY>.<JJJ>
+    <datadir>/<NETDIR>/A/<YYYY>/<JJJ>/<STA>/<STA>.<NET>.<LOC>.<CHN>.<YYYY>.<JJJ>
 Output:
     <out>/<YYYY>/<JJJ>/picks_<NET>.<STA>.<LOC>.<CHN2>.csv
 
-    PYTHONPATH=. python scripts/daily_inference.py --year 2019 --jday 1 \
+    PYTHONPATH=. python scripts/daily_inference.py --datadir /path/to/day_archive --year 2019 --jday 1 \
         [--xml-dir metadata/stationxml/stations] [--limit N] [--overwrite]
 """
 import argparse
@@ -28,7 +28,8 @@ ROOT = str(Path(__file__).resolve().parent.parent)   # project root (this file i
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--datadir", default=f"{ROOT}/data/GDMSData_Read")
+    ap.add_argument("--datadir", required=True,
+                    help="root of the day archive (see the layout above)")
     ap.add_argument("--year", type=int, required=True)
     ap.add_argument("--jday", type=int, required=True)
     ap.add_argument("--out", default=f"{ROOT}/outputs/redpan_picks")
