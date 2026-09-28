@@ -26,7 +26,7 @@ The package includes the three pretrained checkpoints, so one line installs
 everything needed to run them:
 
 ```bash
-pip install "redpan_motion[seisbench] @ git+https://github.com/tso1257771/RED-PAN-Motion@v0.1.0"
+pip install "redpan_motion[seisbench] @ git+https://github.com/tso1257771/RED-PAN-Motion@v0.1.1"
 ```
 
 For development, from a clone:

@@ -262,10 +262,10 @@ def full_response_amplitudes(
     nan3 = (float('nan'),) * 3
     nan_ret = (float('nan'), nan3, nan3)
 
-    chn_chn_pfx = chn_pre.upper()
-    if chn_chn_pfx in VEL_CHN_SET:
+    chn_pfx = chn_pre.upper()
+    if chn_pfx in VEL_CHN_SET:
         output_kind, wa_paz, machine, sensor_type = 'VEL', WA_PAZ_VEL, 'VEL', 'velocity'
-    elif chn_chn_pfx in ACC_CHN_SET:
+    elif chn_pfx in ACC_CHN_SET:
         output_kind, wa_paz, machine, sensor_type = 'ACC', WA_PAZ_ACC, 'ACC', 'acceleration'
     else:
         return nan_ret

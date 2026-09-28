@@ -9,7 +9,7 @@ abstract: >-
   RP90-Motion model, and EdgeRP90 for edge deployment.
 type: software
 license: MIT
-version: 0.1.0
+version: 0.1.1
 repository-code: "https://github.com/tso1257771/RED-PAN-Motion"
 keywords:
   - seismology

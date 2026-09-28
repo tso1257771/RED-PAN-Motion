@@ -29,33 +29,36 @@ ENZ_ORDER = {"E": 0, "1": 0, "N": 1, "2": 1, "Z": 2, "3": 2}
 CH_Z = 2   # vertical row in the (3, T) arrays load() returns (matches the model's CH_Z)
 
 
+def _find_sensitivity(inv, stats, time):
+    """First instrument sensitivity for this trace's channel, trying the
+    channel-code (HHN->HH1) and location ('', '--') fallbacks. With ``time``,
+    only epochs active at that time are considered."""
+    net, sta, loc, chn = stats.network, stats.station, stats.location, stats.channel
+    for c_try in CHN_FALLBACKS.get(chn, [chn]):
+        for loc_try in [loc] + [lc for lc in ("", "--") if lc != loc]:
+            for n in inv.select(network=net, station=sta, location=loc_try,
+                                channel=c_try, time=time):
+                for s in n:
+                    for c in s:
+                        if c.response and c.response.instrument_sensitivity:
+                            return c.response.instrument_sensitivity.value
+    return None
+
+
 def apply_sensitivity(st, inv):
     """Divide each trace by its instrument sensitivity (counts -> physical SI),
     with channel-code (HHN->HH1) and location ('', '--') fallbacks. Matches the
     sensitivity correction of the original RED-PAN without the TF dependency.
-    Returns True iff every trace was corrected."""
+
+    The epoch active at the trace's start time is used, so a station whose
+    sensor changed gets the sensitivity of the sensor that recorded the trace.
+    When no epoch covers that time, the first channel with a response is used,
+    as before. Returns True iff every trace was corrected."""
     ok = True
     for tr in st:
-        net, sta, loc, chn = (tr.stats.network, tr.stats.station,
-                              tr.stats.location, tr.stats.channel)
-        sens = None
-        for c_try in CHN_FALLBACKS.get(chn, [chn]):
-            for loc_try in [loc] + [lc for lc in ("", "--") if lc != loc]:
-                for n in inv.select(network=net, station=sta,
-                                    location=loc_try, channel=c_try):
-                    for s in n:
-                        for c in s:
-                            if c.response and c.response.instrument_sensitivity:
-                                sens = c.response.instrument_sensitivity.value
-                                break
-                        if sens:
-                            break
-                    if sens:
-                        break
-                if sens:
-                    break
-            if sens:
-                break
+        sens = _find_sensitivity(inv, tr.stats, tr.stats.starttime)
+        if sens is None:
+            sens = _find_sensitivity(inv, tr.stats, None)
         if sens and np.isfinite(sens) and sens != 0:
             tr.data = tr.data.astype(np.float64) / sens
         else:
