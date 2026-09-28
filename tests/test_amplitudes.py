@@ -22,6 +22,27 @@ def test_full_response_amplitudes_runs_on_a_velocity_sensor():
     assert all(np.isfinite(v) and v > 0 for v in p_amps + s_amps)
 
 
+def test_an_accelerometer_outside_the_cwa_codes_gets_amplitudes():
+    # 0.1.1 knew only HN and HL as accelerometers, so GeoNet's BN streams
+    # (the 50 Hz stream of the same accelerometer as HN) got NaN amplitudes.
+    inv = obspy.read_inventory().select(network="GR", station="FUR", channel="HH?")
+    for ch in inv[0][0]:
+        ch.code = "BN" + ch.code[-1]
+    raw = np.random.default_rng(0).normal(0, 200, (3, 6000))
+    raw[:, 2000:2600] *= 50
+    wa_mm, p_amps, s_amps = full_response_amplitudes(
+        raw, 2000, 500, 3000, 1000, 1500, 5000,
+        inv, "GR", "FUR", "", "BN", UTCDateTime(2020, 1, 1))
+    assert np.isfinite(wa_mm) and all(np.isfinite(v) for v in p_amps + s_amps)
+
+
+def test_sensor_type_and_the_amplitude_code_share_one_list():
+    from redpan_motion.response import ACC_CHN_SET, VEL_CHN_SET, sensor_type
+    assert {c for c in ACC_CHN_SET if sensor_type(f"N.S.L.{c}") == "acceleration"} == ACC_CHN_SET
+    assert {c for c in VEL_CHN_SET if sensor_type(f"N.S.L.{c}") == "velocity"} == VEL_CHN_SET
+    assert "BN" in ACC_CHN_SET and not ACC_CHN_SET & VEL_CHN_SET
+
+
 def _two_epoch_inventory():
     def channel(start, end, sensitivity):
         return Channel(

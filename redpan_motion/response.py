@@ -32,8 +32,11 @@ WA_PAZ_ACC = {
     'gain': 1.0,
 }
 
-VEL_CHN_SET = {'HH', 'BH', 'EH'}
-ACC_CHN_SET = {'HN', 'HL'}
+# Sensor type from the SEED band + instrument code. One list for both
+# sensor_type() and the amplitude code, which used to know only the CWA
+# prefixes and left, for example, GeoNet's BN accelerometers without amplitudes.
+VEL_CHN_SET = {'EH', 'HH', 'BH', 'SH', 'LH', 'VH', 'UH', 'HF'}
+ACC_CHN_SET = {'HL', 'HN', 'HG', 'LN', 'LG', 'BN', 'SN'}
 
 # -----------------------------------------------------------------------------
 # Wadati-proxy magnitude window constants
@@ -80,9 +83,9 @@ def sensor_type(station_id: str) -> str:
     code (e.g. "TW.ZUZH.10.HN").
     """
     chn_prefix = station_id.split('.')[-1].upper()
-    if chn_prefix in ('HL', 'HN', 'HG', 'LN', 'LG', 'BN', 'SN'):
+    if chn_prefix in ACC_CHN_SET:
         return 'acceleration'
-    elif chn_prefix in ('EH', 'HH', 'BH', 'SH', 'LH', 'VH', 'UH', 'HF'):
+    elif chn_prefix in VEL_CHN_SET:
         return 'velocity'
     else:
         return 'unknown'
