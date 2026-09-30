@@ -27,6 +27,14 @@ at all); noise = 5 clean held-out pools (STEAD/GeoNet/INSTANCE/RockNet/TW; STEAD
 val split — its noise has no test split). ``CEED_val`` is excluded: CEED has no noise
 category, its "drop_noise" traces are labelled earthquakes (P & S picks). Update ``_TABLES``
 in one place if re-fit.
+
+.. warning::
+   The ``redpan_60s`` table is PROVISIONAL as of 0.1.3. It was fit against the
+   previous ``redpan_60s`` checkpoint, which was converted from a different
+   TensorFlow model than the published RED-PAN 60 s one. The checkpoint was
+   rebuilt in 0.1.3 from ``REDPAN_60s_240107``, and these thresholds have not
+   been re-fit against it. The ``redpan_motion`` and ``edge_rp90`` tables are
+   unaffected.
 """
 from __future__ import annotations
 

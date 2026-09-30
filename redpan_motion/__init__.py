@@ -48,4 +48,4 @@ __all__ = [
     'sensor_type', 'CHN_FALLBACKS',
 ]
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'

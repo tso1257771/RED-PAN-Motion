@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "redpan_motion"
-version = "0.1.2"
+version = "0.1.3"
 description = "PyTorch RED-PAN 90 s — multi-task MTAN R2U-Net for earthquake detection, P/S phase picking, and first-motion polarity on 90-second seismic windows"
 readme = "README.md"
 requires-python = ">=3.10"
