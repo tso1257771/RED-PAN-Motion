@@ -31,8 +31,8 @@ in one place if re-fit.
 .. warning::
    The ``redpan_60s`` table is PROVISIONAL as of 0.1.3. It was fit against the
    previous ``redpan_60s`` checkpoint, which was converted from a different
-   TensorFlow model than the published RED-PAN 60 s one. The checkpoint was
-   rebuilt in 0.1.3 from ``REDPAN_60s_240107``, and these thresholds have not
+   TensorFlow run (RP60_03). The checkpoint was rebuilt in 0.1.3 from
+   ``REDPAN_60s_240107``, the RED-PAN release of 2024-01-07, and these thresholds have not
    been re-fit against it. The ``redpan_motion`` and ``edge_rp90`` tables are
    unaffected.
 """

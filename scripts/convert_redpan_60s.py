@@ -1,4 +1,4 @@
-"""Convert the original RED-PAN 60 s TensorFlow model (``TF60``) to a pure-torch
+"""Convert a RED-PAN 60 s TensorFlow model (``TF60``) to a pure-torch
 ``Redpan60s`` checkpoint, with outputs verified to match.
 
 A maintainer tool: ``redpan_motion/checkpoints/redpan_60s/`` already holds its output, so users
@@ -152,8 +152,8 @@ def main():
     torch.save({"model_state_dict": model.state_dict()}, out / "best.pt")
     config = {
         "_comment": (
-            "RED-PAN 60 s: a PyTorch port of the original RED-PAN 60 s model "
-            "(Liao et al.), converted from its trained TensorFlow checkpoint by "
+            f"RED-PAN 60 s: a PyTorch port of the RED-PAN 60 s TensorFlow checkpoint "
+            f"{Path(args.tf_dir).name} (architecture of Liao et al.), converted by "
             "scripts/convert_redpan_60s.py. Two heads, picker (P/S/N) and "
             "detector (event mask), no polarity. 349,685 trainable parameters "
             "plus 3,132 batch-norm statistics, 352,817 in total, equal to the "

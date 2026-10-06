@@ -109,7 +109,7 @@ gives its path.
 
 | checkpoint | window | heads | params | notes |
 |---|---|---|---:|---|
-| `redpan_60s` | 60 s / 6000 | picker, detector | ~350 k | The original RED-PAN 60 s model of Liao et al. (2022), converted to PyTorch from its TensorFlow weights by `scripts/convert_redpan_60s.py`. On random input its output differs from the TensorFlow model by at most about 2e-7. It has no polarity head. |
+| `redpan_60s` | 60 s / 6000 | picker, detector | ~350 k | `REDPAN_60s_240107`, the RED-PAN 60 s release of 7 January 2024. It has the architecture of Liao et al. (2022), and its training included Romanian data (RED-PAN commit `d536907`, "trained with RO data"). It is not the model evaluated in that paper, which is `pretrained_model/REDPAN_60s` of RED-PAN commit `93753bd`. Converted to PyTorch from its TensorFlow weights by `scripts/convert_redpan_60s.py`. On random input its output differs from the TensorFlow model by at most about 2e-7. It has no polarity head. |
 | `redpan_motion` | 90 s / 9000 | picker, detector, polarity | ~544 k | `MTAN_R2UNet_RP90_Motion` (v49), backbone `[8,16,24,32,40]`, trained from scratch on nine datasets: TW, CEED_NC, CEED_SC, INSTANCE, GeoNet, OBSTransformer, ROMPLUS, RockNet and STEAD. |
 | `edge_rp90` | 90 s / 9000 | picker, detector, polarity | ~309 k | `EdgeRP90`, 0.205 GMAC per window, about 4.5 times fewer operations than `redpan_motion`. Trained with the same data and recipe. ONNX exports, fp32 and int8, are in `edge_model_design/deploy/`. |
 

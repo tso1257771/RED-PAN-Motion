@@ -1,4 +1,4 @@
-"""Tests for Redpan60s — the pure-torch port of the original RED-PAN 60 s model.
+"""Tests for Redpan60s — the pure-torch port of the RED-PAN 60 s architecture.
 
 Contract, param budget, length flexibility, and MAC budget. The TF-vs-torch
 parity number (~2e-7) is verified by ``scripts/convert_redpan_60s.py --verify``

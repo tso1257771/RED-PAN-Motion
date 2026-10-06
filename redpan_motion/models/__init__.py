@@ -14,7 +14,7 @@ from redpan_motion.models.edge_rp90 import (
     build_edge_rp90,
 )
 
-# Pure-torch port of the original RED-PAN 60 s model (TF60), 2-head (picker +
+# Pure-torch port of the RED-PAN 60 s architecture (TF60), 2-head (picker +
 # detector), no polarity. For GPU inference / GMAC-measurement / benchmark parity.
 from redpan_motion.models.redpan_60s import (
     Redpan60s,

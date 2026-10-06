@@ -5,8 +5,8 @@ abstract: >-
   A pure-PyTorch multi-task MTAN R2U-Net that jointly performs earthquake
   detection, P and S phase picking, and first-motion polarity on 90-second
   three-component seismic windows at 100 Hz. Ships three pretrained
-  checkpoints: the original RED-PAN 60 s model ported to PyTorch, the 90 s
-  RP90-Motion model, and EdgeRP90 for edge deployment.
+  checkpoints: the RED-PAN 60 s release of 2024-01-07 (REDPAN_60s_240107), ported
+  to PyTorch, the 90 s RP90-Motion model, and EdgeRP90 for edge deployment.
 type: software
 license: MIT
 version: 0.1.3

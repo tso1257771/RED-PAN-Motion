@@ -1,5 +1,5 @@
 {
-  "_comment": "RED-PAN 60 s: a PyTorch port of the original RED-PAN 60 s model (Liao et al.), converted from its trained TensorFlow checkpoint by scripts/convert_redpan_60s.py. Two heads, picker (P/S/N) and detector (event mask), no polarity. 349,685 trainable parameters plus 3,132 batch-norm statistics, 352,817 in total, equal to the TensorFlow count.",
+  "_comment": "RED-PAN 60 s: a PyTorch port of REDPAN_60s_240107, the RED-PAN 60 s release of 2024-01-07, whose training included Romanian data (RED-PAN commit d536907, \"trained with RO data\"). It has the architecture of Liao et al. (2022) but is not the model evaluated in that paper. Converted from its trained TensorFlow checkpoint by scripts/convert_redpan_60s.py. Two heads, picker (P/S/N) and detector (event mask), no polarity. 349,685 trainable parameters plus 3,132 batch-norm statistics, 352,817 in total, equal to the TensorFlow count.",
   "_parity": {
     "picker_max_abs_diff": 1.1920928955078125e-07,
     "detector_max_abs_diff": 1.1920928955078125e-07,

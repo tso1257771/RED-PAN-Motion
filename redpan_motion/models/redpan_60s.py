@@ -1,6 +1,8 @@
 """
-Redpan60s — pure-PyTorch port of the original RED-PAN 60 s model (Liao et al.),
-converted from the released TensorFlow checkpoint (output parity ~2e-7).
+Redpan60s — pure-PyTorch port of the RED-PAN 60 s architecture (Liao et al.),
+with weights converted from a released TensorFlow checkpoint (output parity ~2e-7).
+The shipped weights are REDPAN_60s_240107 (release 2024-01-07, trained with
+Romanian data), not the model evaluated in the 2022 paper.
 
 The original ("TF60") is an MTAN R2U-Net built by
 ``REDPAN_tools/mtan_ARRU.py::unets.build_mtan_R2unet`` with
@@ -200,7 +202,7 @@ class MTANUp(nn.Module):
 
 
 class Redpan60s(nn.Module):
-    """Pure-torch port of the original RED-PAN 60 s model (the *alive* subgraph).
+    """Pure-torch port of the RED-PAN 60 s architecture (the *alive* subgraph).
 
     Output contract: ``forward(x) -> (picker, detector)`` with
     ``x`` shape ``(B, 3, T)`` (T=6000 for the trained model; length-flexible).

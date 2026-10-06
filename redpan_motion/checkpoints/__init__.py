@@ -3,7 +3,7 @@
 Each ``<name>/`` directory holds ``best.pt`` and the ``config.json`` that
 rebuilds its architecture:
 
-    redpan_60s     the original RED-PAN 60 s model, ported to PyTorch
+    redpan_60s     RED-PAN 60 s, release REDPAN_60s_240107, ported to PyTorch
     redpan_motion  the 90 s model with first-motion polarity
     edge_rp90      the smaller 90 s model for edge devices
 

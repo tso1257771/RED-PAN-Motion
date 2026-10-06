@@ -501,7 +501,7 @@ class _RedpanSBBase(sbm.WaveformModel):
 
 
 class RedpanSB60s(_RedpanSBBase):
-    """The original RED-PAN 60 s model behind the SeisBench interface.
+    """The RED-PAN 60 s model (release REDPAN_60s_240107) behind the SeisBench interface.
 
     Outputs four per-sample traces in ``labels`` order: P, S, N and Detection.
     The underlying model returns the picker as (B, 3, T) softmax over P/S/N
