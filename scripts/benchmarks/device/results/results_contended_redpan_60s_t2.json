@@ -1,0 +1,120 @@
+{
+  "model": "redpan_60s",
+  "precision": "fp32",
+  "npts": 6000,
+  "window_s": 60.0,
+  "threads": 2,
+  "reps": 40,
+  "init_s": 1.616,
+  "latency_ms": {
+    "min": 9133.8,
+    "median": 9333.6,
+    "mean": 9376.4,
+    "p90": 9652.0,
+    "max": 10108.7,
+    "stdev": 187.81
+  },
+  "ms_per_1000_samples": 1555.6,
+  "cpu_ms_median": 10523.4,
+  "core_efficiency": 0.564,
+  "realtime_factor": 6.4,
+  "rss_mb": {
+    "baseline": 38.2,
+    "after_session": 57.9,
+    "session_delta": 19.7,
+    "peak_during_run": 74.2,
+    "peak_rusage": 74.4
+  },
+  "latency_all_ms": [
+    9395.7,
+    9363.4,
+    9337.7,
+    9207.7,
+    9268.8,
+    9652.0,
+    9404.4,
+    9227.0,
+    9195.3,
+    9420.8,
+    9255.8,
+    9267.7,
+    9146.6,
+    9268.4,
+    10108.7,
+    9763.4,
+    9329.5,
+    9635.9,
+    9297.7,
+    9359.6,
+    9141.3,
+    9313.2,
+    9133.8,
+    9526.9,
+    9365.4,
+    9358.0,
+    9579.2,
+    9337.9,
+    9299.1,
+    9326.2,
+    9653.3,
+    9274.4,
+    9420.7,
+    9369.1,
+    9327.4,
+    9537.5,
+    9254.7,
+    9388.7,
+    9273.6,
+    9268.9
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 4287.9,
+      "max": 4928,
+      "n": 10817
+    },
+    "VDD_GPU": {
+      "mean": 48.3,
+      "max": 159,
+      "n": 10817
+    },
+    "VDD_CPU": {
+      "mean": 2321.3,
+      "max": 2821,
+      "n": 10817
+    }
+  },
+  "energy_per_window_J": 40.0216,
+  "idle_power_mw": 3196.0,
+  "dynamic_power_mw": 1091.9,
+  "dynamic_energy_per_window_J": 10.1914,
+  "state_after": {
+    "loadavg": [
+      6.12,
+      5.7,
+      4.79
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 35.0,
+      "CPU-therm": 27.5,
+      "GPU-therm": 25.0,
+      "PLL-therm": 26.0,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 26.25
+    },
+    "mem_available_mb": 1510.9,
+    "power_mw": {
+      "VDD_IN": 3833,
+      "VDD_GPU": 39,
+      "VDD_CPU": 1797
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "contended"
+}

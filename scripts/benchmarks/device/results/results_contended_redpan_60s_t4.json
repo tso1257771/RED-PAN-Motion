@@ -1,0 +1,120 @@
+{
+  "model": "redpan_60s",
+  "precision": "fp32",
+  "npts": 6000,
+  "window_s": 60.0,
+  "threads": 4,
+  "reps": 40,
+  "init_s": 1.632,
+  "latency_ms": {
+    "min": 9339.9,
+    "median": 9538.4,
+    "mean": 9557.9,
+    "p90": 9769.5,
+    "max": 10019.6,
+    "stdev": 149.83
+  },
+  "ms_per_1000_samples": 1589.73,
+  "cpu_ms_median": 10928.3,
+  "core_efficiency": 0.286,
+  "realtime_factor": 6.3,
+  "rss_mb": {
+    "baseline": 38.2,
+    "after_session": 58.0,
+    "session_delta": 19.8,
+    "peak_during_run": 74.7,
+    "peak_rusage": 74.9
+  },
+  "latency_all_ms": [
+    9536.2,
+    9365.4,
+    9597.5,
+    9374.1,
+    9613.1,
+    9644.3,
+    9629.1,
+    9527.7,
+    9567.9,
+    9494.1,
+    9512.5,
+    9432.2,
+    9577.7,
+    9444.9,
+    9569.1,
+    9553.9,
+    9481.6,
+    9921.4,
+    9572.0,
+    9517.4,
+    9678.9,
+    9465.0,
+    9415.6,
+    9419.9,
+    9739.4,
+    9485.3,
+    9769.5,
+    9712.8,
+    9397.1,
+    9437.4,
+    9406.0,
+    9410.0,
+    9490.4,
+    9540.5,
+    9542.7,
+    10019.6,
+    9667.8,
+    9832.2,
+    9339.9,
+    9613.7
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 4309.2,
+      "max": 5007,
+      "n": 10997
+    },
+    "VDD_GPU": {
+      "mean": 49.4,
+      "max": 159,
+      "n": 10997
+    },
+    "VDD_CPU": {
+      "mean": 2333.0,
+      "max": 2861,
+      "n": 10997
+    }
+  },
+  "energy_per_window_J": 41.1028,
+  "idle_power_mw": 3196.0,
+  "dynamic_power_mw": 1113.2,
+  "dynamic_energy_per_window_J": 10.6181,
+  "state_after": {
+    "loadavg": [
+      6.13,
+      5.89,
+      5.2
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 35.5,
+      "CPU-therm": 28.5,
+      "GPU-therm": 25.5,
+      "PLL-therm": 26.0,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 26.5
+    },
+    "mem_available_mb": 1502.7,
+    "power_mw": {
+      "VDD_IN": 4306,
+      "VDD_GPU": 119,
+      "VDD_CPU": 2113
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "contended"
+}

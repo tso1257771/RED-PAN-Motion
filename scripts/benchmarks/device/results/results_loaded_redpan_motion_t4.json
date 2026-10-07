@@ -1,0 +1,120 @@
+{
+  "model": "redpan_motion",
+  "precision": "fp32",
+  "npts": 9000,
+  "window_s": 90.0,
+  "threads": 4,
+  "reps": 40,
+  "init_s": 0.287,
+  "latency_ms": {
+    "min": 160.8,
+    "median": 505.3,
+    "mean": 423.0,
+    "p90": 614.7,
+    "max": 641.9,
+    "stdev": 168.03
+  },
+  "ms_per_1000_samples": 56.14,
+  "cpu_ms_median": 1013.0,
+  "core_efficiency": 0.501,
+  "realtime_factor": 178.1,
+  "rss_mb": {
+    "baseline": 39.9,
+    "after_session": 51.0,
+    "session_delta": 11.1,
+    "peak_during_run": 64.1,
+    "peak_rusage": 64.3
+  },
+  "latency_all_ms": [
+    486.0,
+    594.4,
+    486.9,
+    541.5,
+    284.8,
+    176.9,
+    185.0,
+    173.8,
+    161.4,
+    171.8,
+    195.2,
+    176.0,
+    183.0,
+    193.2,
+    160.8,
+    223.1,
+    225.9,
+    542.4,
+    524.4,
+    491.5,
+    513.6,
+    513.1,
+    641.9,
+    509.2,
+    614.7,
+    522.9,
+    458.9,
+    502.1,
+    449.4,
+    546.2,
+    458.9,
+    582.0,
+    529.8,
+    617.5,
+    628.2,
+    522.1,
+    565.5,
+    531.9,
+    508.5,
+    525.9
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 4998.1,
+      "max": 5695,
+      "n": 525
+    },
+    "VDD_GPU": {
+      "mean": 62.4,
+      "max": 158,
+      "n": 525
+    },
+    "VDD_CPU": {
+      "mean": 2935.6,
+      "max": 3322,
+      "n": 525
+    }
+  },
+  "energy_per_window_J": 2.5256,
+  "idle_power_mw": 3401.0,
+  "dynamic_power_mw": 1597.1,
+  "dynamic_energy_per_window_J": 0.807,
+  "state_after": {
+    "loadavg": [
+      7.72,
+      6.66,
+      5.88
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 35.5,
+      "CPU-therm": 29.5,
+      "GPU-therm": 25.5,
+      "PLL-therm": 26.0,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 27.5
+    },
+    "mem_available_mb": 2050.5,
+    "power_mw": {
+      "VDD_IN": 4848,
+      "VDD_GPU": 79,
+      "VDD_CPU": 2777
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "loaded"
+}

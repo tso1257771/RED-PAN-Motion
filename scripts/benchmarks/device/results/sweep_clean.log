@@ -1,0 +1,27 @@
+waiting for a quiet box (no tritonserver, 1-min load < 1.2)...
+box is quiet (load 1.00); settling 30 s
+idle VDD_IN: 1879 mW
+=== RED-PAN on Jetson Nano | ORT CPU | tag=clean reps=60 ===
+before: load average: 0.60, 2.60, 3.34 | mem_avail 2384 MB | CPU 23C
+model           prec  thr    median     min     p90     sd  ms/1ks   eff     RTF  peakRSS
+redpan_60s      fp32    1     63.6ms    62.3    64.2   0.51   10.60  1.18    943x    68.5MB     192mJ
+redpan_60s      fp32    2     44.8ms    44.1    45.4   0.44    7.47  1.10   1339x    69.7MB     169mJ
+redpan_60s      fp32    3     38.9ms    37.8    39.3   0.52    6.48  1.06   1544x    67.7MB     174mJ
+redpan_60s      fp32    4     40.1ms    36.8    43.2   1.97    6.69  0.98   1495x    68.2MB     197mJ
+redpan_motion   fp32    1    329.3ms   326.9   331.9   2.25   36.59  1.19    273x    63.5MB    1025mJ
+redpan_motion   fp32    2    192.4ms   191.5   193.8   0.87   21.37  1.09    468x    60.7MB     772mJ
+redpan_motion   fp32    3    140.3ms   139.0   141.7   1.10   15.59  1.06    642x    62.0MB     674mJ
+redpan_motion   fp32    4    155.7ms   144.0   166.5   6.88   17.30  0.98    578x    61.3MB     808mJ
+edge_rp90       fp32    1    117.3ms   115.5   122.2   2.65   13.03  1.20    767x    71.3MB     380mJ
+edge_rp90       fp32    2     77.6ms    76.5    80.1   1.38    8.62  1.10   1160x    71.9MB     314mJ
+edge_rp90       fp32    3     64.8ms    64.0    66.4   1.03    7.20  1.06   1388x    71.3MB     307mJ
+edge_rp90       fp32    4     75.3ms    65.0    77.7   3.86    8.37  0.99   1194x    79.0MB     386mJ
+edge_rp90_int8  int8    1    134.9ms   134.0   135.7   0.76   14.99  1.19    667x    76.1MB     411mJ
+edge_rp90_int8  int8    2     97.4ms    96.5    98.6   0.72   10.82  1.10    924x    77.3MB     375mJ
+edge_rp90_int8  int8    3     83.9ms    83.0    88.8   3.23    9.33  1.06   1072x    76.1MB     389mJ
+edge_rp90_int8  int8    4    105.6ms    83.2   163.0  31.52   11.73  0.91    852x    75.8MB     529mJ
+after : load average: 3.17, 2.70, 3.26 | CPU 26C | clocks 1479000 1479000 1479000 1479000 
+
+=== sustained load (throttling / steady-state power) ===
+edge_rp90 t1 180s: 1521 windows (8.45/s) | median 116.4ms | first-Q 116.8 -> last-Q 116.1 (-0.6%) | CPU 26.5->28.0C max | clk 1479.0-1479.0MHz | VDD_IN 3014.0mW
+edge_rp90 t4 180s: 2462 windows (13.68/s) | median 66.8ms | first-Q 66.8 -> last-Q 66.1 (-1.0%) | CPU 27.0->30.5C max | clk 1479.0-1479.0MHz | VDD_IN 5198.0mW

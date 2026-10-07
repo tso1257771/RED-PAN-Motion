@@ -1,0 +1,140 @@
+{
+  "model": "edge_rp90_int8",
+  "precision": "int8",
+  "npts": 9000,
+  "window_s": 90.0,
+  "threads": 1,
+  "reps": 60,
+  "init_s": 0.446,
+  "latency_ms": {
+    "min": 134.0,
+    "median": 134.9,
+    "mean": 135.0,
+    "p90": 135.7,
+    "max": 137.9,
+    "stdev": 0.76
+  },
+  "ms_per_1000_samples": 14.99,
+  "cpu_ms_median": 160.9,
+  "core_efficiency": 1.193,
+  "realtime_factor": 667.3,
+  "rss_mb": {
+    "baseline": 38.2,
+    "after_session": 49.1,
+    "session_delta": 10.8,
+    "peak_during_run": 76.1,
+    "peak_rusage": 76.3
+  },
+  "latency_all_ms": [
+    135.3,
+    135.7,
+    134.7,
+    136.2,
+    134.8,
+    135.0,
+    134.9,
+    134.9,
+    135.1,
+    134.8,
+    134.6,
+    135.5,
+    137.9,
+    134.4,
+    134.5,
+    134.0,
+    135.1,
+    134.8,
+    135.0,
+    134.8,
+    134.9,
+    134.9,
+    134.0,
+    134.3,
+    135.2,
+    134.5,
+    135.1,
+    137.1,
+    135.0,
+    135.1,
+    134.8,
+    135.3,
+    134.7,
+    135.1,
+    134.5,
+    134.9,
+    135.2,
+    134.3,
+    134.1,
+    135.4,
+    134.9,
+    134.9,
+    137.9,
+    134.3,
+    134.6,
+    134.5,
+    134.6,
+    134.8,
+    134.4,
+    135.0,
+    134.5,
+    135.2,
+    134.7,
+    134.6,
+    135.2,
+    135.5,
+    134.7,
+    136.7,
+    134.7,
+    134.3
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 3047.1,
+      "max": 3250,
+      "n": 301
+    },
+    "VDD_GPU": {
+      "mean": 0,
+      "max": 0,
+      "n": 301
+    },
+    "VDD_CPU": {
+      "mean": 1152.4,
+      "max": 1282,
+      "n": 301
+    }
+  },
+  "energy_per_window_J": 0.4109,
+  "idle_power_mw": 1879.0,
+  "dynamic_power_mw": 1168.1,
+  "dynamic_energy_per_window_J": 0.1575,
+  "state_after": {
+    "loadavg": [
+      2.1,
+      2.5,
+      3.21
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 33.5,
+      "CPU-therm": 25.5,
+      "GPU-therm": 26.0,
+      "PLL-therm": 24.0,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 26.5
+    },
+    "mem_available_mb": 2413.7,
+    "power_mw": {
+      "VDD_IN": 2656,
+      "VDD_GPU": 0,
+      "VDD_CPU": 803
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "clean"
+}

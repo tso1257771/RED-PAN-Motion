@@ -1,0 +1,61 @@
+{
+  "onnx_RP60_ref": {
+    "model": "onnx_RP60_ref",
+    "reps": 40,
+    "client_ms": {
+      "median": 154.4,
+      "min": 149.0,
+      "p90": 160.0,
+      "stdev": 3.5
+    },
+    "server_ms": {
+      "success_total": 151.2,
+      "queue": 0.11,
+      "compute_input": 0.04,
+      "compute_infer": 150.9,
+      "compute_output": 0.11
+    },
+    "serving_overhead_ms": 3.6,
+    "requests_per_s": 6.46
+  },
+  "edge_rp90": {
+    "model": "edge_rp90",
+    "reps": 40,
+    "client_ms": {
+      "median": 129.8,
+      "min": 122.4,
+      "p90": 133.7,
+      "stdev": 2.61
+    },
+    "server_ms": {
+      "success_total": 126.3,
+      "queue": 0.09,
+      "compute_input": 0.04,
+      "compute_infer": 125.8,
+      "compute_output": 0.2
+    },
+    "serving_overhead_ms": 4.0,
+    "requests_per_s": 7.69,
+    "max_abs_diff_vs_local_ort": 1.3113021850585938e-06
+  },
+  "edge_rp90_int8": {
+    "model": "edge_rp90_int8",
+    "reps": 40,
+    "client_ms": {
+      "median": 133.0,
+      "min": 130.6,
+      "p90": 135.4,
+      "stdev": 1.49
+    },
+    "server_ms": {
+      "success_total": 130.3,
+      "queue": 0.08,
+      "compute_input": 0.04,
+      "compute_infer": 129.9,
+      "compute_output": 0.2
+    },
+    "serving_overhead_ms": 3.1,
+    "requests_per_s": 7.51,
+    "max_abs_diff_vs_local_ort": 0.0
+  }
+}

@@ -1,0 +1,6 @@
+  trial 0 done
+  trial 1 done
+  trial 2 done
+torch port vs PRODUCTION tf2onnx graph (identical inputs):
+  picker    max|diff| = 3.284e-04  -> DIFFERENT model/checkpoint
+  detector  max|diff| = 7.071e-04  -> DIFFERENT model/checkpoint

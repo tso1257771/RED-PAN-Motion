@@ -1,0 +1,21 @@
+idle VDD_IN: 3401 mW
+=== RED-PAN on Jetson Nano | ORT CPU | tag=loaded reps=40 ===
+before: load average: 4.19, 6.09, 5.63 | mem_avail 2096 MB | CPU 25C
+model           prec  thr    median     min     p90     sd  ms/1ks   eff     RTF  peakRSS
+redpan_60s      fp32    1     68.6ms    66.1    73.7   2.98   11.44  1.15    874x    72.8MB     320mJ
+redpan_60s      fp32    2     68.5ms    44.7   109.9  22.03   11.41  0.82    876x    70.1MB     327mJ
+redpan_60s      fp32    3    103.0ms    40.3   145.3  23.71   17.17  0.62    582x    69.1MB     498mJ
+redpan_60s      fp32    4    146.4ms    63.4   202.0  36.38   24.39  0.50    410x    70.8MB     705mJ
+redpan_motion   fp32    1    365.4ms   352.5   399.6  22.37   40.60  1.13    246x    62.3MB    1695mJ
+redpan_motion   fp32    2    342.0ms   273.5   391.0  34.82   38.00  0.80    263x    62.5MB    1671mJ
+redpan_motion   fp32    3    407.4ms   221.2   476.6  54.95   45.26  0.62    221x    61.4MB    2013mJ
+redpan_motion   fp32    4    505.3ms   160.8   614.7 168.03   56.14  0.50    178x    64.1MB    2526mJ
+edge_rp90       fp32    1    127.7ms   121.6   149.4  10.54   14.19  1.13    705x    75.5MB     608mJ
+edge_rp90       fp32    2    136.4ms    79.4   180.1  28.03   15.16  0.82    660x    71.0MB     671mJ
+edge_rp90       fp32    3    185.8ms    71.8   251.4  44.85   20.64  0.64    484x    72.8MB     915mJ
+edge_rp90       fp32    4    277.0ms   167.3   346.3  65.44   30.78  0.46    325x    70.1MB    1352mJ
+edge_rp90_int8  int8    1    139.4ms   135.9   161.4  10.32   15.49  1.15    645x    76.8MB     650mJ
+edge_rp90_int8  int8    2    166.8ms    97.1   192.3  30.13   18.54  0.76    539x    77.2MB     802mJ
+edge_rp90_int8  int8    3    204.1ms    91.1   254.2  39.31   22.67  0.61    441x    78.9MB    1000mJ
+edge_rp90_int8  int8    4    304.5ms    91.1   356.2  61.97   33.84  0.46    296x    78.9MB    1484mJ
+after : load average: 7.44, 6.73, 5.96 | CPU 28C | clocks 1479000 1479000 1479000 1479000 

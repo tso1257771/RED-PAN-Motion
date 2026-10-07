@@ -1,0 +1,87 @@
+{
+  "model": "redpan_60s",
+  "precision": "fp32",
+  "npts": 6000,
+  "window_s": 60.0,
+  "threads": 1,
+  "reps": 10,
+  "init_s": 1.09,
+  "latency_ms": {
+    "min": 66.0,
+    "median": 69.2,
+    "mean": 72.9,
+    "p90": 90.0,
+    "max": 90.0,
+    "stdev": 8.97
+  },
+  "ms_per_1000_samples": 11.54,
+  "cpu_ms_median": 79.3,
+  "core_efficiency": 1.146,
+  "realtime_factor": 866.8,
+  "rss_mb": {
+    "baseline": 39.8,
+    "after_session": 58.6,
+    "session_delta": 18.8,
+    "peak_during_run": 70.5,
+    "peak_rusage": 70.6
+  },
+  "latency_all_ms": [
+    70.5,
+    66.0,
+    89.0,
+    90.0,
+    72.1,
+    67.8,
+    68.8,
+    66.0,
+    69.1,
+    69.4
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 4474.3,
+      "max": 4968,
+      "n": 23
+    },
+    "VDD_GPU": {
+      "mean": 51.2,
+      "max": 119,
+      "n": 23
+    },
+    "VDD_CPU": {
+      "mean": 2415.6,
+      "max": 2861,
+      "n": 23
+    }
+  },
+  "energy_per_window_J": 0.3097,
+  "state_after": {
+    "loadavg": [
+      3.84,
+      6.13,
+      5.64
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 34.5,
+      "CPU-therm": 27.5,
+      "GPU-therm": 24.5,
+      "PLL-therm": 25.0,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 26.5
+    },
+    "mem_available_mb": 2041.4,
+    "power_mw": {
+      "VDD_IN": 4498,
+      "VDD_GPU": 39,
+      "VDD_CPU": 2468
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "fixedcheck"
+}

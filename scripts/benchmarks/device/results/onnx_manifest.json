@@ -1,0 +1,51 @@
+[
+  {
+    "name": "redpan_60s",
+    "onnx": "/tmp/onnx_export/bench/onnx/redpan_60s.onnx",
+    "mb": 1.984117,
+    "params": 349685,
+    "buffers": 3218,
+    "parity_max_abs": 1.1920928955078125e-07,
+    "inputs": [
+      "x"
+    ],
+    "outputs": [
+      "picker",
+      "detector"
+    ]
+  },
+  {
+    "name": "redpan_motion",
+    "onnx": "/tmp/onnx_export/bench/onnx/redpan_motion.onnx",
+    "mb": 2.242056,
+    "params": 543840,
+    "buffers": 5784,
+    "parity_max_abs": 1.817941665649414e-06,
+    "inputs": [
+      "x",
+      "z_raw"
+    ],
+    "outputs": [
+      "picker",
+      "polarity",
+      "detector"
+    ]
+  },
+  {
+    "name": "edge_rp90",
+    "onnx": "/tmp/onnx_export/bench/onnx/edge_rp90.onnx",
+    "mb": 1.332351,
+    "params": 308904,
+    "buffers": 8858,
+    "parity_max_abs": 2.6226043701171875e-06,
+    "inputs": [
+      "x",
+      "z_raw"
+    ],
+    "outputs": [
+      "picker",
+      "polarity",
+      "detector"
+    ]
+  }
+]

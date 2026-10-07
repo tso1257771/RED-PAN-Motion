@@ -1,0 +1,140 @@
+{
+  "model": "redpan_60s",
+  "precision": "fp32",
+  "npts": 6000,
+  "window_s": 60.0,
+  "threads": 2,
+  "reps": 60,
+  "init_s": 0.979,
+  "latency_ms": {
+    "min": 44.1,
+    "median": 44.8,
+    "mean": 44.9,
+    "p90": 45.4,
+    "max": 46.3,
+    "stdev": 0.44
+  },
+  "ms_per_1000_samples": 7.47,
+  "cpu_ms_median": 98.8,
+  "core_efficiency": 1.103,
+  "realtime_factor": 1338.8,
+  "rss_mb": {
+    "baseline": 38.2,
+    "after_session": 56.9,
+    "session_delta": 18.7,
+    "peak_during_run": 69.7,
+    "peak_rusage": 69.9
+  },
+  "latency_all_ms": [
+    45.1,
+    44.9,
+    44.6,
+    45.0,
+    44.4,
+    44.5,
+    44.6,
+    45.0,
+    44.3,
+    46.3,
+    44.4,
+    44.8,
+    45.2,
+    44.2,
+    44.5,
+    45.4,
+    44.8,
+    44.5,
+    45.0,
+    44.8,
+    44.8,
+    44.9,
+    44.5,
+    44.8,
+    44.8,
+    44.3,
+    44.8,
+    44.7,
+    44.8,
+    44.3,
+    45.5,
+    45.0,
+    45.8,
+    45.0,
+    44.9,
+    44.7,
+    44.9,
+    44.6,
+    44.7,
+    44.6,
+    44.4,
+    44.5,
+    46.3,
+    44.8,
+    44.9,
+    44.9,
+    44.7,
+    44.9,
+    45.3,
+    44.5,
+    45.4,
+    45.1,
+    44.9,
+    44.7,
+    45.9,
+    44.9,
+    44.6,
+    44.8,
+    44.7,
+    44.1
+  ],
+  "power_mw": {
+    "VDD_IN": {
+      "mean": 3773.9,
+      "max": 3880,
+      "n": 101
+    },
+    "VDD_GPU": {
+      "mean": 0,
+      "max": 0,
+      "n": 101
+    },
+    "VDD_CPU": {
+      "mean": 1963.0,
+      "max": 2040,
+      "n": 101
+    }
+  },
+  "energy_per_window_J": 0.1691,
+  "idle_power_mw": 1879.0,
+  "dynamic_power_mw": 1894.9,
+  "dynamic_energy_per_window_J": 0.0849,
+  "state_after": {
+    "loadavg": [
+      0.66,
+      2.54,
+      3.31
+    ],
+    "cpu_mhz": [
+      1479.0,
+      1479.0,
+      1479.0,
+      1479.0
+    ],
+    "temp_c": {
+      "AO-therm": 32.5,
+      "CPU-therm": 24.5,
+      "GPU-therm": 24.5,
+      "PLL-therm": 22.5,
+      "PMIC-Die": 50.0,
+      "thermal-fan-est": 25.25
+    },
+    "mem_available_mb": 2350.2,
+    "power_mw": {
+      "VDD_IN": 2893,
+      "VDD_GPU": 0,
+      "VDD_CPU": 1085
+    }
+  },
+  "ort_version": "1.14.1",
+  "tag": "clean"
+}
