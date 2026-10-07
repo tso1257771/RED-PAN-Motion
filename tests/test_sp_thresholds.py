@@ -38,11 +38,11 @@ def test_duration_binning():
 
 def test_params_by_duration_and_floor():
     t = resolve_table("rp90_motion_v49")
-    assert params_for_duration(3, t) == (0.60, 0.50, 0.20)     # near bin: low mask-mean, high P
-    assert params_for_duration(30, t) == (0.90, 0.10, 0.20)    # far bin: high mask-mean, low P
+    assert params_for_duration(3, t) == (0.60, 0.40, 0.20)     # near bin: low mask-mean, high P
+    assert params_for_duration(30, t) == (0.90, 0.10, 0.10)    # far bin: high mask-mean, low P
     # floor = min over all bins+default; used so candidate peaks aren't pre-filtered
     m, p, s = floor_thresholds(t)
-    assert p == 0.10 and s == 0.20 and m == 0.60
+    assert p == 0.10 and s == 0.10 and m == 0.60
 
 
 # ---------- detect_events_joint adaptive path ----------
@@ -58,8 +58,8 @@ def test_adaptive_backward_compat_none():
 
 
 def test_adaptive_drops_pick_below_bin_threshold():
-    # near event (~5 s trigger -> [0,5)); v49 near-bin P=0.50. A P peak of 0.35 passes the
-    # FIXED floor (0.30) but must be dropped by the adaptive bin threshold (0.50). The strong
+    # near event (~5 s trigger -> [0,5)); v49 near-bin P=0.40. A P peak of 0.35 passes the
+    # FIXED floor (0.30) but must be dropped by the adaptive bin threshold (0.40). The strong
     # mask (mean ~0.94) clears the near-bin mask-mean gate (0.60), isolating the P drop.
     p, s, mask = _trace()
     mask[1000:1500] = 0.95; p[1010] = 0.35; s[1450] = 0.85
@@ -83,7 +83,7 @@ def test_adaptive_mask_mean_gate():
 
 def test_adaptive_accepts_strong_event():
     # strong sustained trigger: mask mean ~0.94 and P/S well above edge's [0,5) bin gates
-    # (0.60 / 0.30 / 0.20) -> adaptive keeps the pair.
+    # (0.60 / 0.20 / 0.20) -> adaptive keeps the pair.
     p, s, mask = _trace()
     mask[1000:1500] = 0.95; p[1010] = 0.9; s[1450] = 0.85
     adapt = detect_events_joint(p, s, mask, 0.01, 0.30, 0.20, 0.50,

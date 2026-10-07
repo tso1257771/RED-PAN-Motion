@@ -19,22 +19,29 @@ The trigger MUST be delineated exactly as it was when the thresholds were fitted
 ``_SP_TRIG_ONSET`` on/off — the mean is window-sensitive, so the thresholds only transfer
 under this recipe. ``detect_events_joint`` and ``_postprocess_threshold`` both use it.
 
-Thresholds were fit by a joint (mask-mean-gated) sweep over all 8 test datasets with the
-EXACT inside-mask JOINT noise false-positive (a noise trace counts only if mask-mean AND
-inside-max-P AND inside-max-S all fire, read only WITHIN each trigger). Fit data is strictly
-held out from training: EQ = the 8 SeisBench TEST splits (incl. ``crew``, never in training
-at all); noise = 5 clean held-out pools (STEAD/GeoNet/INSTANCE/RockNet/TW; STEAD uses its
-val split — its noise has no test split). ``CEED_val`` is excluded: CEED has no noise
+Thresholds were fit by a joint (mask-mean-gated) sweep, per S-P bin and macro-averaged over 8
+test datasets, with the EXACT inside-mask JOINT noise false-positive (a noise trace counts only if
+mask-mean AND inside-max-P AND inside-max-S all fire, read only WITHIN each trigger).
+
+Re-fit on 2026-10-07 (RED-PAN-Motion manuscript re-run, ``RERUN_REDPAN_RESULTS.md`` Section 12)
+on records held out from training of the 90 s models:
+
+- EQ: the test splits of CEED-NC, CEED-SC, CREW (never in training at all), INSTANCE, ROMPLUS,
+  STEAD and TW, plus the GeoNet 2013-2014 holdout (GeoNet has no test split, and its validation
+  split was used for checkpoint selection). 1,306,541 records with S-P > 0.
+- Noise: 5 held-out pools, 92,213 traces: the official STEAD test noise (``test.npy``) and the
+  GeoNet, INSTANCE, RockNet and TW test noise.
+
+The tables shipped up to 0.1.3 were fit with STEAD *training* traces among the earthquakes of the
+two 90 s models and with the STEAD validation noise. ``CEED_val`` is excluded: CEED has no noise
 category, its "drop_noise" traces are labelled earthquakes (P & S picks). Update ``_TABLES``
 in one place if re-fit.
 
-.. warning::
-   The ``redpan_60s`` table is PROVISIONAL as of 0.1.3. It was fit against the
-   previous ``redpan_60s`` checkpoint, which was converted from a different
-   TensorFlow run (RP60_03). The checkpoint was rebuilt in 0.1.3 from
-   ``REDPAN_60s_240107``, the RED-PAN release of 2024-01-07, and these thresholds have not
-   been re-fit against it. The ``redpan_motion`` and ``edge_rp90`` tables are
-   unaffected.
+The ``redpan_60s`` table is fit for the shipped ``REDPAN_60s_240107`` checkpoint on both its
+earthquakes and its noise (the 0.1.3 table mixed 240107 earthquakes with noise from a different
+port, RP60_03), with the same noise pool and the earthquake records of the earlier fit. RED-PAN
+was trained on Taiwan and STEAD data, and 240107 also on Romanian data, so its TW, STEAD and
+ROMPLUS records are not guaranteed to be held out from its training.
 """
 from __future__ import annotations
 
@@ -59,18 +66,18 @@ _SP_TRIG_ONSET: float = 0.1
 _TABLES: Dict[str, Dict[str, Union[Tuple[float, float, float], List[Tuple[float, float, float]]]]] = {
     "edge_rp90": {
         "default": (0.80, 0.20, 0.20),
-        "bins": [(0.60, 0.30, 0.20), (0.70, 0.20, 0.20), (0.80, 0.10, 0.20),
+        "bins": [(0.60, 0.20, 0.20), (0.70, 0.20, 0.20), (0.80, 0.10, 0.10),
                  (0.90, 0.10, 0.10), (0.90, 0.10, 0.10)],
     },
     "rp90_motion_v49": {
         "default": (0.80, 0.20, 0.20),
-        "bins": [(0.60, 0.50, 0.20), (0.80, 0.20, 0.20), (0.90, 0.20, 0.20),
-                 (0.90, 0.20, 0.20), (0.90, 0.10, 0.20)],
+        "bins": [(0.60, 0.40, 0.20), (0.80, 0.20, 0.20), (0.90, 0.10, 0.20),
+                 (0.90, 0.10, 0.20), (0.90, 0.10, 0.10)],
     },
     "redpan_60s": {
         "default": (0.80, 0.20, 0.20),
-        "bins": [(0.60, 0.40, 0.20), (0.80, 0.10, 0.20), (0.90, 0.20, 0.20),
-                 (0.90, 0.20, 0.20), (0.90, 0.20, 0.20)],
+        "bins": [(0.60, 0.40, 0.20), (0.80, 0.30, 0.10), (0.90, 0.30, 0.10),
+                 (0.90, 0.30, 0.10), (0.90, 0.20, 0.10)],
     },
 }
 
