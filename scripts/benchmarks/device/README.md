@@ -182,9 +182,10 @@ python compare_graphs.py                             # torch export vs a served 
 
 - ONNX files are **not** committed (they are regenerable in one command); `results/`
   holds the measurements, including per-repeat timings and machine state.
-- The INT8 graph here is calibrated on 64 synthetic windows. That is valid for
-  **latency**, but **not** for accuracy claims - the paper's INT8 used 192 held-out
-  real traces.
+- The INT8 graph here is calibrated on 64 synthetic windows. A graph built the same
+  way keeps P and S pick F1 within 0.1 percentage point of fp32 on 2,000 held-out
+  STEAD test records. Calibrating on 192 real records with min-max instead loses
+  2.6 points on P (percentile calibration: 0.8), so the calibration method matters.
 - `eff` above 1.0 at 1 thread is the sampler thread's CPU time; wall latency is unaffected.
 - The idle power baseline includes the desktop session, so dynamic energy is a
   conservative (slightly low) attribution.
