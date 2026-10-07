@@ -1,0 +1,23 @@
+# Data and output locations for the benchmark harness. Copy to config.yaml, edit, and pass
+# --config config.yaml to any entry point (or set RPM_BENCH_CONFIG=config.yaml).
+# Any key can also be overridden by an environment variable RPM_BENCH_<KEY>, e.g. RPM_BENCH_H5_ROOT.
+# Values may reference other keys: {data_root}, {h5_root}, ...
+paths:
+  data_root: ../data
+  results_root: ./results
+  # 90 s HDF5 archives (one directory per dataset; see README "Data")
+  h5_root: "{data_root}/input_h5_90sec_v3"
+  # official STEAD test noise as 90 s windows (build_stead_noise_test.py)
+  stead_noise_test_dir: "{h5_root}/STEAD/STEAD_noise_test_90s"
+  # original STEAD release: merge.hdf5, merge.csv, test.npy
+  stead_root: "{data_root}/STEAD"
+  # GeoNet 2013-2014 holdout (build_geonet_holdout.py) and the GeoNet benchmark dataset it is built from
+  geonet_holdout_root: "{data_root}/GeoNet_benchmark_test"
+  geonet_source_root: "{data_root}/GeoNet_benchmark"
+  # SeisBench CEED cache and the 99,998-trace CEED test list (Table V)
+  ceed_cache: "{data_root}/seisbench_cache/datasets/ceed"
+  ceed_test_ids: "{data_root}/ceed_test_ids_100k.npy"
+  # streaming replay: EQ_Mw4_to_6.9/ and noise/sac_120s_{CWB_StrongMotion,Palert}/
+  eew_root: "{data_root}/TW_EEW"
+  # RED-PAN 2022 paper model converted to PyTorch (README, "RED-PAN 2022 model")
+  redpan_paper_ckpt: "{data_root}/checkpoints/redpan_60s_paper/best.pt"

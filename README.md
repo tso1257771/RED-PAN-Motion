@@ -162,7 +162,10 @@ RED-PAN-Motion/
 ├── scripts/                # daily_inference, picks_to_csv, template_inference,
 │   │                       #   train_rp90_motion, verify_install, convert_redpan_60s
 │   └── benchmarks/         #   benchmark_stead, benchmark_ceed_polarity,
-│                           #   benchmark_polarity_filt, benchmark_p_pick_timing
+│       │                   #   benchmark_polarity_filt, benchmark_p_pick_timing
+│       └── device/         #   on-device latency, energy and INT8 (Jetson Nano)
+├── benchmarks/             # the evaluation harness: archive builder, runners and
+│                           #   scorers for the paper's tables (benchmarks/README.md)
 ├── notebooks/              # fdsn_inference.ipynb (FDSN download and picking),
 │                           #   daily_inference.py (a day archive, as Jupyter cells)
 ├── edge_model_design/deploy/    # edge_rp90 exported to ONNX, fp32 and INT8
@@ -209,6 +212,13 @@ DATA_ROOT=/path/to/input_h5_90sec \
 The training HDF5 layout is `waveforms (N,3,9000)`, `labels (N,9000,3)` as
 one-hot P/S/N, and `masks (N,9000,2)` for the event mask. `MultiDatasetH5`
 documents the full schema for each dataset.
+
+## Reproducing the evaluation
+
+`benchmarks/` builds the 90 s test archives from the public datasets and reproduces
+the evaluation tables and figures of the RED-PAN-Motion paper. Its README maps each
+table to the commands that produce it and lists the data each command needs.
+`scripts/benchmarks/device/` holds the on-device measurements.
 
 ## Tests
 

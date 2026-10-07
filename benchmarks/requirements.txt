@@ -1,0 +1,17 @@
+# Benchmark harness for the RED-PAN-Motion manuscript (Python 3.10-3.12: these pins do not
+# install on later versions).
+# Versions are the ones the published numbers were produced and re-verified with. The one-off
+# RED-PAN 2022 model conversion (README) ran separately with TensorFlow 2.15.1 and PyTorch 2.10.
+# Install the redpan_motion package from the repository root first:  pip install -e ..
+numpy==1.26.4
+scipy==1.15.3
+pandas==2.2.2
+h5py==3.11.0
+obspy==1.5.0
+torch==2.5.1          # any CUDA build; CPU also works
+seisbench==0.11.0     # PhaseNet / EQTransformer baselines (Table III, Fig. 3)
+onnx==1.21.0          # INT8 check
+onnxruntime==1.24.2   # INT8 check (static quantization + inference)
+PyYAML==6.0.1
+matplotlib            # Fig. 3 plot only (plot_fig3.py); not pinned
+pytest                # tests/
