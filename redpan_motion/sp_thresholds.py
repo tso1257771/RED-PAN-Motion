@@ -39,8 +39,8 @@ in one place if re-fit.
 
 The ``redpan_60s`` table is fit for the shipped ``REDPAN_60s_240107`` checkpoint on both its
 earthquakes and its noise (the 0.1.3 table mixed 240107 earthquakes with noise from a different
-port, RP60_03), with the same noise pool and the earthquake records of the earlier fit. RED-PAN
-was trained on Taiwan and STEAD data, and 240107 also on Romanian data, so its TW, STEAD and
+port, RP60_03), on the same held-out earthquake sets and noise pool as the other two tables
+(``RERUN_REDPAN_RESULTS.md`` Section 17). RED-PAN was trained on Taiwan and STEAD data, and 240107 also on Romanian data, so its TW, STEAD and
 ROMPLUS records are not guaranteed to be held out from its training.
 """
 from __future__ import annotations
@@ -76,8 +76,8 @@ _TABLES: Dict[str, Dict[str, Union[Tuple[float, float, float], List[Tuple[float,
     },
     "redpan_60s": {
         "default": (0.80, 0.20, 0.20),
-        "bins": [(0.60, 0.40, 0.20), (0.80, 0.30, 0.10), (0.90, 0.30, 0.10),
-                 (0.90, 0.30, 0.10), (0.90, 0.20, 0.10)],
+        "bins": [(0.60, 0.40, 0.20), (0.70, 0.30, 0.20), (0.90, 0.30, 0.10),
+                 (0.90, 0.30, 0.10), (0.90, 0.30, 0.10)],
     },
 }
 
