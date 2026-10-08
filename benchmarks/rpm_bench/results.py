@@ -1,6 +1,7 @@
 """Paths of the run outputs the scorers read (all under ``results_root``):
 
 static/<model>/<dataset>.csv                  run_static.py
+static/<model>/<dataset>_picks.csv            run_static.py --picks (Table III pick F1)
 noise/<model>/noisefp[_triggers]_<POOL>.csv   run_noise.py
 native/<model>/<dataset>.csv                  run_native.py
 polarity/<model>_polarity_per_event.csv       run_polarity.py
@@ -51,6 +52,11 @@ def noise_csv(cfg: dict, model: str, pool: str, triggers: bool = True) -> Path:
         / model
         / f"noisefp_{'triggers_' if triggers else ''}{pool}.csv"
     )
+
+
+def picks_csv(cfg: dict, model: str, dataset: str) -> Path:
+    """Per-record scored picks of a RED-PAN static run (``run_static.py --picks``)."""
+    return cfg["results_root"] / "static" / model / f"{dataset}_picks.csv"
 
 
 def native_csv(cfg: dict, model: str, dataset: str) -> Path:

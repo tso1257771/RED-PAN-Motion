@@ -48,8 +48,8 @@ package's S-P table). Baselines: `phasenet_stead`, `phasenet_instance`, `eqt_ste
 | Output | Runs (once per model / dataset) | Scorer |
 |---|---|---|
 | **Table II** (8 test sets, single trigger, pooled noise) and the detector-trigger count | `run_static.py --model M --dataset D` for D in `ceed_nc ceed_sc crew geonet instance romplus stead_h5 tw` (GeoNet: the 2013–2014 holdout earthquakes); `run_noise.py --model M --pool P` for P in `STEAD_test GeoNet_test INSTANCE_test RockNet_test TW_test` | `score_table2.py` |
-| **Table III** (6 shared sets, threshold 0.3) | `run_static.py --model M --dataset D` for D in `stead geonet crew tw instance romplus stead_noise_test`; `run_native.py --model B --dataset D` for B in the four baselines and D in `stead geonet crew tw instance romplus` (`--max-eq 30000` for `phasenet_stead`/`eqt_stead` on `stead` and `tw`, as published) | `score_table3.py` |
-| Table III, GeoNet column with the GeoNet test noise (16,384 records) | `run_static_noise.py --model M --pool GeoNet`; `run_native.py --model B --dataset geonet_noise_test` for the four baselines | `score_table3_geonet_test_noise.py` |
+| **Table III** (6 shared sets, threshold 0.3; GeoNet noise = the GeoNet test split) | `run_static.py --model M --dataset D` for D in `stead geonet crew tw instance romplus stead_noise_test` and `run_static_noise.py --model M --pool GeoNet`; `run_native.py --model B --dataset D` for B in the four baselines and D in `stead geonet geonet_noise_test crew tw instance romplus` (`--max-eq 30000` for `phasenet_stead`/`eqt_stead` on `stead` and `tw`, as published) | `score_table3.py` (`--geonet-noise holdout` for the first submission's GeoNet noise; `score_table3_geonet_test_noise.py` prints both) |
+| Table III P and S pick F1 (no detection gate, all seven configurations) | the Table III runs, with `--picks` added to the `run_static.py` and `run_static_noise.py` runs of the RED-PAN models (`--evids` limits `stead` to the 16,301 held-out earthquakes) | `score_table3.py --pick-f1` |
 | **Table IV** and the S-P threshold fit | the Table II noise runs; `run_static.py --model M --dataset D` for D in `ceed_nc ceed_sc crew geonet instance romplus stead_h5 tw` | `score_table4.py` (add `--models ... redpan_240107` for the package table) |
 | **Fig. 3** (`f1_vs_sp_time.csv`) | the Table III static runs and the pooled-noise runs; for the baselines also `run_native.py --model eqt_stead/eqt_instance --dataset geonet_noise_test` and `rocknet_noise_test` | `score_fig3.py`, then `plot_fig3.py` (the manuscript's plotting script; needs matplotlib) plots the CSV |
 | **Section II-E** (trigger duration vs S-P) | the Table IV static runs of `edge` | `score_duration.py` |
@@ -178,7 +178,14 @@ Run on the benchmark PC before publication:
   noise that is independent of the 90 s archive's split; 13,752 of them are in the archive's training
   split and 4,423 in its validation split. The holdout earthquakes are not in the archive. Tables II,
   IV and Fig. 3 use the pooled test noise instead, and `score_table3_geonet_test_noise.py` scores the
-  Table III GeoNet column on the GeoNet test noise (16,384 records, all from 2024).
+  Table III GeoNet column on the GeoNet test noise (16,384 records, all from 2024), as
+  `score_table3.py` does by default.
+- **Pick F1 (Table III, `--pick-f1`):** every model's scored pick follows the native SeisBench rule
+  (`rpm_bench/picks.py`): the highest `find_peaks` peak within the tolerance around the label, or the
+  highest peak of the record on noise. The first submission's P / S F1 used the pick of the
+  highest-mean trigger row instead, which for the RED-PAN models is the argmax inside that mask
+  trigger; a RED-PAN noise record without a trigger could not be a false positive. For the
+  baselines the two rules agree.
 - **Static windows** place the labeled P at 10% of the model window (an evaluation convenience that uses
   the label, the same for all RED-PAN models).
 - **INT8:** the accuracy change depends on the calibration method (MinMax on real records about −2.6 pp

@@ -16,10 +16,7 @@ import torch
 from scipy.signal import find_peaks
 
 from .constants import DT, P_TOL_SEC, S_TOL_SEC, SENTINEL
-
-SR = 100
-MIN_PROB = 0.1
-PEAK_MIN_DIST = 50  # 0.5 s
+from .picks import MIN_PROB, PEAK_MIN_DIST, SR, best_peak_near  # noqa: F401  (re-exported)
 
 
 @torch.no_grad()
@@ -77,32 +74,6 @@ def sliding_inference(model, wf_TC: np.ndarray, kind: str, device: str):
     return a_acc, b_acc, c_acc
 
 
-def best_peak_near(
-    prob: np.ndarray,
-    gt_sample: int | None,
-    tol_sec: float,
-    sr: int = SR,
-    min_height: float = MIN_PROB,
-    min_distance: int = PEAK_MIN_DIST,
-):
-    """(sample, height) of the highest ``find_peaks`` peak within ``tol_sec`` of ``gt_sample``
-    (of the highest peak overall when ``gt_sample`` is None); ``(-1, 0.0)`` if there is none."""
-    peaks, info = find_peaks(prob, height=min_height, distance=min_distance)
-    heights = info.get("peak_heights", np.zeros(len(peaks)))
-    if len(peaks) == 0:
-        return -1, 0.0
-    if gt_sample is None:
-        idx = int(np.argmax(heights))
-        return int(peaks[idx]), float(heights[idx])
-    tol = int(tol_sec * sr)
-    within = np.abs(peaks - gt_sample) <= tol
-    if not np.any(within):
-        return -1, 0.0
-    cand = np.where(within)[0]
-    best = cand[int(np.argmax(heights[cand]))]
-    return int(peaks[best]), float(heights[best])
-
-
 def process_trace(model_name: str, model, wf_TC, info, device) -> dict:
     """One record -> one row in the static-run schema (see run_native.py)."""
     if model_name.startswith("PHASENET_SB"):
@@ -148,9 +119,11 @@ def process_trace(model_name: str, model, wf_TC, info, device) -> dict:
         model=model_name,
         labelP_sec=info["labelP_sec"],
         labelS_sec=info["labelS_sec"],
-        ps_diff_sec=(info["labelS_sec"] - info["labelP_sec"])
-        if (info["labelP_sec"] >= 0 and info["labelS_sec"] >= 0)
-        else SENTINEL,
+        ps_diff_sec=(
+            (info["labelS_sec"] - info["labelP_sec"])
+            if (info["labelP_sec"] >= 0 and info["labelS_sec"] >= 0)
+            else SENTINEL
+        ),
         polarity_label=info.get("polarity_label", ""),
         n_triggers=len(det_peaks),
         trigger_idx=0,

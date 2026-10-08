@@ -40,6 +40,7 @@ import numpy as np
 import pandas as pd
 from rpm_bench import config, datasets, models
 from rpm_bench.constants import DT
+from rpm_bench.picks import record_picks
 from rpm_bench.static import build_rows, extract_triggers, run_static
 
 H5_DIRS = {
@@ -137,6 +138,18 @@ def main():
         help="output CSV (default <results_root>/static/<model>/<dataset>.csv)",
     )
     p.add_argument(
+        "--picks",
+        action="store_true",
+        help="also write one row per record with the scored P and S picks of the native rule "
+        "(rpm_bench/picks.py) to <out stem>_picks.csv, for the Table III pick F1",
+    )
+    p.add_argument(
+        "--evids",
+        type=Path,
+        default=None,
+        help="run only the records whose evid is listed (.npy, or text with one evid per line)",
+    )
+    p.add_argument(
         "--seed",
         type=int,
         default=None,
@@ -178,10 +191,20 @@ def main():
         out,
     )
 
+    keep = None
+    if args.evids is not None:
+        keep = (
+            {str(x) for x in np.load(args.evids, allow_pickle=True).tolist()}
+            if args.evids.suffix == ".npy"
+            else {ln.strip() for ln in open(args.evids) if ln.strip()}
+        )
     rows: list[dict] = []
+    pick_rows: list[dict] = []
     t0 = time.time()
     n_done = 0
     for wf, info in (x for it in (eq_it, nz_it) for x in it):
+        if keep is not None and str(info["evid"]) not in keep:
+            continue
         p_abs = int(round(info["labelP_sec"] / DT)) if info["labelP_sec"] >= 0 else None
         s_abs = int(round(info["labelS_sec"] / DT)) if info["labelS_sec"] >= 0 else None
         mask, p_arr, s_arr, pol = run_static(
@@ -205,6 +228,8 @@ def main():
                 info.get("polarity_label", ""),
             )
         )
+        if args.picks:
+            pick_rows.append(record_picks(info, p_arr, s_arr))
         n_done += 1
         if n_done % 1000 == 0:
             logging.info("  %d records (%.1fs)", n_done, time.time() - t0)
@@ -212,6 +237,10 @@ def main():
         raise config.no_records_error(*source(args.dataset, cfg))
     out.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(out, index=False)
+    if args.picks:
+        pick_out = out.with_name(out.stem + "_picks.csv")
+        pd.DataFrame(pick_rows).to_csv(pick_out, index=False)
+        logging.info("wrote %d pick rows -> %s", len(pick_rows), pick_out)
     logging.info(
         "wrote %d rows for %d records -> %s (%.1fs)", len(rows), n_done, out, time.time() - t0
     )

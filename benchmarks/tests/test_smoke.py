@@ -37,6 +37,8 @@ STATIC_SETS = (
     "stead_h5",
     "tw",
 )
+PICK_COLS = ["evid", "label_type", "labelP_sec", "labelS_sec", "P_pick_sec", "P_pick_prob",
+             "S_pick_sec", "S_pick_prob", "P_residual_sec", "S_residual_sec"]  # fmt: skip
 STEAD_EQ = [f"ST{k:03d}.XX_2017_EV" for k in range(12)]
 STEAD_NZ = [f"ST{k:03d}.XX_2017_NO" for k in range(6)]
 
@@ -90,6 +92,15 @@ def make_tree(root: Path):
         pd.DataFrame(static_rows(STEAD_NZ, m, True)).to_csv(
             res / "static" / m / "stead_noise_test.csv", index=False
         )
+        pd.DataFrame(static_rows([f"geonet_t{i}" for i in range(5)], m, True)).to_csv(
+            res / "static" / m / "geonet_test_noise.csv", index=False
+        )
+        # per-record pick rows (run_static.py --picks), one per record
+        for f in list((res / "static" / m).glob("*.csv")):
+            if not f.stem.endswith("_picks"):
+                pd.read_csv(f).drop_duplicates("evid")[PICK_COLS].to_csv(
+                    f.with_name(f.stem + "_picks.csv"), index=False
+                )
         (res / "noise" / m).mkdir(parents=True, exist_ok=True)
         for pool in POOLS:
             trig = [
