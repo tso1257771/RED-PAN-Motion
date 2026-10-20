@@ -77,6 +77,9 @@ def load(data_glob, xml=None):
     waveform are skipped entirely (``wf_sensonly`` / ``inv`` are None) — the
     no-amplitude fast path."""
     st = obspy.read(data_glob)
+    # zero-length traces (e.g. GeoNet's empty objects for new channel names on renaming
+    # days) would make the common sample count zero; they carry nothing, drop them
+    st = obspy.Stream([tr for tr in st if tr.stats.npts > 0])
     st.merge(method=1, fill_value=0)
     # Align the channels in time before stacking them by sample index. Day files
     # served by FDSN / the GeoNet S3 archive start each channel at its own record

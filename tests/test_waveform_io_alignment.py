@@ -28,3 +28,16 @@ def test_load_aligns_staggered_channel_starts(tmp_path):
     recovered = t_start + i_spike / sr
     assert abs(recovered - spike_time) < 0.5 / sr, f"Z spike recovered at {recovered}, expected {spike_time}"
     assert raw.shape[1] >= int(60 * sr)        # nothing lost: padded to the union of the channels
+
+
+def test_load_ignores_zero_length_traces(tmp_path):
+    sr, t0 = 100.0, UTCDateTime("2023-08-29T00:00:00")
+    traces = [Trace(np.ones(int(60 * sr), dtype=np.int32) * k, header=dict(network="NZ", station="HNCZ", location="10",
+                    channel=ch, sampling_rate=sr, starttime=t0)) for k, ch in ((1, "HH1"), (2, "HH2"), (3, "HHZ"))]
+    traces.append(Trace(np.zeros(0, dtype=np.int32), header=dict(network="NZ", station="HNCZ", location="10",
+                        channel="HHN", sampling_rate=sr, starttime=t0)))   # empty renamed channel
+    f = tmp_path / "NZ.HNCZ.10.HH?.mseed"
+    Stream(traces).write(str(f), format="MSEED", encoding="STEIM2")
+    raw, _, _, _, _, _ = load(str(f))
+    assert raw.shape == (3, int(60 * sr))
+    assert raw[CH_Z].max() == 3
