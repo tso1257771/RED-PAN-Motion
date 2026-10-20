@@ -87,6 +87,16 @@ def load(data_glob, xml=None):
     # this, a channel starting later than st[0] has every sample mis-timed by that
     # offset (seen as +-1-3 s pick errors against GeoNet, 2026-10-20). Hourly files
     # cut to a common window (the SAC archive) are unaffected.
+    # When two channel codes map to the same component row (HH1 and HHN on a renaming
+    # day, a stub next to the real channel), keep the trace with the most real samples
+    # per row; otherwise a padded stub would overwrite the real component with zeros.
+    real_npts = {id(tr): tr.stats.npts for tr in st}
+    best = {}
+    for tr in st:
+        k = ENZ_ORDER.get(tr.stats.channel[-1].upper())
+        if k is not None and (k not in best or real_npts[id(tr)] > real_npts[id(best[k])]):
+            best[k] = tr
+    st = obspy.Stream(sorted(best.values(), key=lambda tr: ENZ_ORDER[tr.stats.channel[-1].upper()]))
     t_min = min(tr.stats.starttime for tr in st)
     t_max = max(tr.stats.endtime for tr in st)
     st.trim(t_min, t_max, pad=True, fill_value=0)

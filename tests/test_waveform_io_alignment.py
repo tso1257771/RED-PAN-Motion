@@ -41,3 +41,18 @@ def test_load_ignores_zero_length_traces(tmp_path):
     raw, _, _, _, _, _ = load(str(f))
     assert raw.shape == (3, int(60 * sr))
     assert raw[CH_Z].max() == 3
+
+
+def test_load_prefers_the_channel_with_data_when_codes_collide(tmp_path):
+    """A one-sample stub under the new channel name (HHN) must not overwrite the real
+    horizontal (HH2) that maps to the same component row."""
+    sr, t0 = 100.0, UTCDateTime("2023-08-29T00:00:00")
+    hdr = dict(network="NZ", station="HNCZ", location="10", sampling_rate=sr, starttime=t0)
+    traces = [Trace(np.ones(int(60 * sr), dtype=np.int32) * k, header=dict(hdr, channel=ch))
+              for k, ch in ((1, "HH1"), (2, "HH2"), (3, "HHZ"))]
+    traces.append(Trace(np.array([7], dtype=np.int32), header=dict(hdr, channel="HHN")))   # 1-sample stub
+    f = tmp_path / "NZ.HNCZ.10.HH?.mseed"
+    Stream(traces).write(str(f), format="MSEED", encoding="STEIM2")
+    raw, _, _, _, _, _ = load(str(f))
+    assert raw.shape == (3, int(60 * sr))
+    assert raw[1].min() == 2 and raw[1].max() == 2      # N row still carries HH2, not the stub
