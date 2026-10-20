@@ -78,6 +78,15 @@ def load(data_glob, xml=None):
     no-amplitude fast path."""
     st = obspy.read(data_glob)
     st.merge(method=1, fill_value=0)
+    # Align the channels in time before stacking them by sample index. Day files
+    # served by FDSN / the GeoNet S3 archive start each channel at its own record
+    # boundary, i.e. the three traces can begin up to a few seconds apart; without
+    # this, a channel starting later than st[0] has every sample mis-timed by that
+    # offset (seen as +-1-3 s pick errors against GeoNet, 2026-10-20). Hourly files
+    # cut to a common window (the SAC archive) are unaffected.
+    t_min = min(tr.stats.starttime for tr in st)
+    t_max = max(tr.stats.endtime for tr in st)
+    st.trim(t_min, t_max, pad=True, fill_value=0)
     tr0 = st[0]
     net, sta, loc = tr0.stats.network, tr0.stats.station, tr0.stats.location
     chn_pre = tr0.stats.channel[:2]
