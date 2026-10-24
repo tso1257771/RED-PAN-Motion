@@ -247,6 +247,7 @@ def full_response_amplitudes(
     raw_counts, p_idx, p_win, s_idx, s_win,
     mag_start, mag_end,
     inv, net, sta, loc, chn_pre, t0,
+    return_components=False,
 ):
     """Single-pass full-response computation for one P/S pair.
 
@@ -258,9 +259,14 @@ def full_response_amplitudes(
       5. Weak-signal bandpass (1-25 Hz, corners=4) on WA traces
 
     Returns (wa_mm, p_amps, s_amps) where amps = (disp_nm, vel_nm_s, acc_gal).
+    With ``return_components=True`` a fourth item is returned: {'E', 'N', 'Z'} -> peak
+    Wood-Anderson displacement (mm) of that component in the same magnitude window
+    (NaN where unavailable). ``wa_mm`` itself is unchanged (horizontal mean).
     """
     nan3 = (float('nan'),) * 3
     nan_ret = (float('nan'), nan3, nan3)
+    if return_components:
+        nan_ret = nan_ret + ({'E': float('nan'), 'N': float('nan'), 'Z': float('nan')},)
 
     chn_pfx = chn_pre.upper()
     if chn_pfx in VEL_CHN_SET:
@@ -398,6 +404,7 @@ def full_response_amplitudes(
     # WA: horizontal mean of per-channel max in magnitude window
     rel_lo = mag_start - win_start
     rel_hi = min(mag_end - win_start, wa_trcs[0].stats.npts)
+    comp_mm = {'E': float('nan'), 'N': float('nan'), 'Z': float('nan')}
     if rel_hi <= rel_lo:
         wa_mm = float('nan')
     else:
@@ -408,9 +415,15 @@ def full_response_amplitudes(
             wa_mm = float(np.mean(
                 [float(np.max(np.abs(tr.data[rel_lo:rel_hi]))) for tr in horiz]
             )) * 1000.0
+        for tr in wa_trcs:
+            comp = {'1': 'N', '2': 'E'}.get(tr.stats.channel[-1].upper(), tr.stats.channel[-1].upper())
+            if comp in comp_mm:
+                comp_mm[comp] = float(np.max(np.abs(tr.data[rel_lo:rel_hi]))) * 1000.0
 
     p_amps = phys_amps_in_window(phys_trcs, p_idx - win_start, p_win, sensor_type, dt,
                                  vel_trcs=vel_trcs, disp_trcs=disp_trcs)
     s_amps = phys_amps_in_window(phys_trcs, s_idx - win_start, s_win, sensor_type, dt,
                                  vel_trcs=vel_trcs, disp_trcs=disp_trcs)
+    if return_components:
+        return wa_mm, p_amps, s_amps, comp_mm
     return wa_mm, p_amps, s_amps
