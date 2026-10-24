@@ -37,6 +37,9 @@ COLUMNS = [
     "WA_amp_disp_mm", "snr",
     "polarity", "polarity_prob",   # first motion at P: +1 up / -1 down, softmax prob
 ]
+# Appended by picks_to_dataframe(..., wa_components=True): per-component peak Wood-Anderson
+# displacement (mm) in the same per-pair magnitude window as WA_amp_disp_mm.
+WA_COMPONENT_COLUMNS = ["WA_mm_E", "WA_mm_N", "WA_mm_Z"]
 
 
 def s_match_window(sp_diff_sec, base_sec=0.5, frac=0.10):
@@ -65,7 +68,7 @@ def match_s_arrival(detected_s_sec, theoretical_s_sec, sp_diff_sec, base_sec=0.5
 
 def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
                        raw_counts=None, wf_sensonly=None, inv=None, dt=0.01,
-                       amplitude=True,
+                       amplitude=True, wa_components=False,
                        p_pick_thr=0.30, s_pick_thr=0.20, det_thr=0.50,
                        min_sp_sec=1.0, sp_thresholds=None,
                        post_s_factor=1.5, max_amp_win_sec=80.0, noise_win_sec=3.0):
@@ -79,7 +82,12 @@ def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
     matching RED-PAN ``picker_info``): each mask detection (>= ``det_thr``) that
     contains both a P peak (>= ``p_pick_thr``) and an S peak (>= ``s_pick_thr``)
     yields one (P, S) pair. With ``amplitude=False`` the per-pick response removal
-    is skipped (amp/WA/snr -> NaN; raw_counts/wf_sensonly/inv unused)."""
+    is skipped (amp/WA/snr -> NaN; raw_counts/wf_sensonly/inv unused).
+    ``wa_components=True`` appends ``WA_COMPONENT_COLUMNS`` (WA_mm_E/N/Z): the peak
+    Wood-Anderson displacement of each component, from the same per-pair traces and
+    magnitude window as ``WA_amp_disp_mm`` (NaN with ``amplitude=False``).
+    Values are written at full precision: timestamps to the microsecond, prob,
+    snr and polarity_prob unrounded."""
     p_prob, s_prob = picker[:, 0], picker[:, 1]   # [P, S, Noise]
     mask_prob = detector[:, 0]                     # [mask, unmask]
     polarity_arr = polarity
@@ -109,13 +117,13 @@ def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
             pol_ch = polarity_arr.shape[1]
             if pol_ch >= 3:        # [N, U, D]
                 up_prob, dn_prob = float(polarity_arr[p_idx, 1]), float(polarity_arr[p_idx, 2])
-                pol_sign, pol_prob = (1 if up_prob >= dn_prob else -1), round(max(up_prob, dn_prob), 3)
+                pol_sign, pol_prob = (1 if up_prob >= dn_prob else -1), max(up_prob, dn_prob)
             elif pol_ch == 2:      # [U, D]
                 up_prob, dn_prob = float(polarity_arr[p_idx, 0]), float(polarity_arr[p_idx, 1])
-                pol_sign, pol_prob = (1 if up_prob >= dn_prob else -1), round(max(up_prob, dn_prob), 3)
+                pol_sign, pol_prob = (1 if up_prob >= dn_prob else -1), max(up_prob, dn_prob)
             else:                  # signed tanh, single channel in [-1, 1]
                 val = float(polarity_arr[p_idx, 0])
-                pol_sign, pol_prob = (1 if val >= 0 else -1), round(abs(val), 3)
+                pol_sign, pol_prob = (1 if val >= 0 else -1), abs(val)
         else:
             pol_sign = pol_prob = nan
 
@@ -136,15 +144,19 @@ def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
             if mag_end <= mag_start:
                 mag_end = min(npts, mag_start + max(1, p_win + s_win))
             # full ObsPy response (both phases + Wood-Anderson) in a single call
-            wa_mm, p_full, s_full = full_response_amplitudes(
+            fr = full_response_amplitudes(
                 raw_counts, p_idx, p_win, s_idx, s_win,
                 mag_start=mag_start, mag_end=mag_end, inv=inv,
                 net=net, sta=sta, loc=loc, chn_pre=chn_pre, t0=starttime,
+                return_components=wa_components,
             )
+            wa_mm, p_full, s_full = fr[:3]
+            wa_comp = fr[3] if wa_components else None
             phase_rows = (("p", p_idx, p_pv, p_win, p_full),
                           ("s", s_idx, s_pv, s_win, s_full))
         else:                               # CWA-style fast path: no amplitudes
             wa_mm = nan
+            wa_comp = {"E": nan, "N": nan, "Z": nan} if wa_components else None
             phase_rows = (("p", p_idx, p_pv, None, None), ("s", s_idx, s_pv, None, None))
 
         for phase, idx, pv, win, full in phase_rows:
@@ -152,14 +164,13 @@ def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
                 disp_so, vel_so, acc_so = window_amplitudes(wf_sensonly, idx, win, sensor, dt)
                 disp_fr, vel_fr, acc_fr = full
                 anchor = p_idx if phase == "s" else None
-                snr = compute_snr(wf_sensonly, idx, win, noise_npts, noise_anchor=anchor)
-                snr_v = round(snr, 2) if not np.isnan(snr) else snr
+                snr_v = float(compute_snr(wf_sensonly, idx, win, noise_npts, noise_anchor=anchor))
             else:
                 disp_so = vel_so = acc_so = disp_fr = vel_fr = acc_fr = snr_v = nan
-            rows.append({
+            row = {
                 "id": station_id,
-                "timestamp": str(starttime + idx * dt)[:24],
-                "prob": round(pv, 2),
+                "timestamp": str(starttime + idx * dt)[:26],   # YYYY-MM-DDTHH:MM:SS.ffffff
+                "prob": float(pv),
                 "type": phase,
                 "pick_idx": pair_idx,
                 "amp_disp_nm_sensonly": disp_so, "amp_vel_nm_s_sensonly": vel_so,
@@ -169,5 +180,8 @@ def picks_to_dataframe(picker, detector, polarity, starttime, station_id,
                 "snr": snr_v,
                 "polarity": pol_sign if phase == "p" else nan,
                 "polarity_prob": pol_prob if phase == "p" else nan,
-            })
-    return pd.DataFrame(rows, columns=COLUMNS)
+            }
+            if wa_components:
+                row.update({f"WA_mm_{c}": wa_comp[c] for c in ("E", "N", "Z")})
+            rows.append(row)
+    return pd.DataFrame(rows, columns=COLUMNS + (WA_COMPONENT_COLUMNS if wa_components else []))
